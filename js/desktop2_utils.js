@@ -3,6 +3,7 @@ utils = (function(){
     return {
         getUniqueName: getUniqueName,
         getLayer: getLayer,
+        getLayerByName: getLayerByName,
         getLayerUrl: getLayerUrl,
         parseOpacity: parseOpacity,
         updateCurrentBounds: updateCurrentBounds,
@@ -26,10 +27,18 @@ utils = (function(){
         return result;
         }
 
-    // get layer object from the current mapJson
+    // get layer object from the current mapJson by ID
     function getLayer(mapJson,id){
         let layer = mapJson["layers"].filter(obj => {
             return obj.id === id
+          })[0]
+        return layer
+    }
+
+    // get layer object from the current mapJson by name
+    function getLayerByName(mapJson,name){
+        let layer = mapJson["layers"].filter(obj => {
+            return obj.name === name
           })[0]
         return layer
     }
@@ -269,7 +278,8 @@ utils = (function(){
         service="https://gisn.tel-aviv.gov.il/arcgis/rest/services/IView2/MapServer/",
         layer_id,
         feature_id=1,
-        where=""){
+        where="")
+        {
             let baseUrl =  ''.concat(service, layer_id, '/query?')
             let baseParameters = 'outFields=*&returnGeometry=true&geometryPrecision=7&outSR=4326&f=geojson&returnExtentOnly=true'
             if(where.length > 1){
@@ -311,8 +321,17 @@ utils = (function(){
  * Get layer object from the current mapJson
  * @function
  * @name getLayer
+ * @param {mapJson} mapJson - An object of [mapJson]{@link mapJson} type
  * @param {integer} id - ID of the layer as defined in the ArcGIS server service and as defined by the "id" key in the layer object.
- * @return {object}   A layer object from the map configuration file.
+ * @return {mapJson-layer}   A layer object from the map configuration file.
+ */
+/**
+ * Get layer object from the current mapJson, by layer name
+ * @function
+ * @name getLayerByName
+ * @param {mapJson} mapJson - An object of [mapJson]{@link mapJson} type
+ * @param {String} name - name of the layer as defined in the ArcGIS server service and as defined by the "name" key in the layer object.
+ * @return {mapJson-layer}   A layer object from the map configuration file.
  */
 /**
  * get URL for retreiving a GeoJson contained by a buffer of the neighborhood
