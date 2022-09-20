@@ -951,47 +951,65 @@ esriRenderer = (function(){
     /*
         add map events to change feature states so highlight layer will show
    */
+  /**
+     * Creates the map events that display highlight layer on hover. \n
+     * Since no highlight is available, what [highlightMouseMove]{@link highlightMouseMove} does is display a second, larger, 
+     * layer with the same geometry but different symbology.
+     * @function
+     * @name activateHighlightLayer
+     * @param {mapJson-layer} layer - An object of [mapJson-layer]{@link mapJson-layer} type
+    */
     function activateHighlightLayer(layer){
         
-        //let hoveredStateId
-        map.on('mousemove',  layer['name'], highlightMouseMove);
-            
-            // When the mouse leaves the state-fill layer, update the feature state of the
-            // previously hovered feature.
-        map.on('mouseleave',  layer['name'], function(){
+        map.on('mouseover',  layer['name'], highlightMouseMove);
+
+        map.on('mousemove',  layer['name'], highlightMouseOut)
+        /*function(){
             let sourceName = layer['name']+'-source';
-            if (hoveredStateId) {
+            if (layer.hoveredStateId) {
                 map.setFeatureState(
-                    { source: sourceName, id: hoveredStateId },
+                    { source: sourceName, id: layer.hoveredStateId },
                     { hover: false }
                 );
             }
-            hoveredStateId = null;
+            layer.hoveredStateId = null;
             rows = Array.from(document.getElementsByTagName('tr'));
             rows.forEach(element => {
                 element.style.backgroundColor = "";
                 element.style.border = ""
             })
-        });
+        })*/;
     }
    
 
+    /**
+     * Displays the specific feature ID on hover
+     * @function
+     * @name highlightMouseMove
+     * @param {Event} e - A map hover event
+    */
    function highlightMouseMove(e){
     
         if (e.features.length > 0) {
-            let layer = e.features[0].layer
-            let sourceName = layer['id']+'-source';
+            let sourceLayer = e.features[0].layer
+            let sourceName = sourceLayer['id']+'-source';
+            let layerName = e.features[0].layer['id']
+            let layer = utils.getLayerByName(env.mapJson ,layerName)
+            
+            //console.log(layer)
+            if (layer.hoveredStateId !== undefined) {
+                
+                map.removeFeatureState({
+                    source: sourceName,
+                    id: layer.hoveredStateId
+                    },'hover');
                     
-            if (hoveredStateId) {
-                map.setFeatureState(
-                    { source: sourceName, id: hoveredStateId },
-                    { hover: false }
-                );
             }
-            hoveredStateId = e.features[0].id;
+            layer.hoveredStateId = null;
+            layer.hoveredStateId = e.features[0].id;
             
             map.setFeatureState(
-                { source: sourceName, id: hoveredStateId },
+                { source: sourceName, id: layer.hoveredStateId },
                 { hover: true }
             );
             if(map.hasControl(tables)){
@@ -999,7 +1017,7 @@ esriRenderer = (function(){
                 rows.forEach(element => {
                     if(element.value){
                         if(element.value.source == sourceName && 
-                            element.value.id == hoveredStateId){
+                            element.value.id == layer.hoveredStateId){
                                 element.style.backgroundColor = "#ddd";
                                 element.style.border = "1px solid rgb(255, 255, 255)"
                         }else{
@@ -1014,15 +1032,29 @@ esriRenderer = (function(){
     
 
    function highlightMouseOut(e){
+    console.log(e)
+    console.log(e.features)
     
-        let sourceName = layer['name']+'-source';
-        if (hoveredStateId) {
-            map.setFeatureState(
-                { source: sourceName, id: hoveredStateId },
-                { hover: false }
-            );
+        if (e.features.length > 0) {
+            let layerName = e.features[0].layer['id']
+            let sourceLayer = e.features[0].layer
+            let sourceName = sourceLayer['id']+'-source';
+            let layer = utils.getLayerByName(env.mapJson ,layerName)
+
+            console.log(layer)
+
+            if (sourceLayer.hoveredStateId) {
+                map.removeFeatureState({
+                    source: sourceName,
+                    sourceLayer: layerName,
+                    id: e.features[0].id
+                    }, 'hover');
+            }
+
+            sourceLayer.hoveredStateId = null;
+        }else{
+            console.log('no features')
         }
-        hoveredStateId = null;
     }
     
 
