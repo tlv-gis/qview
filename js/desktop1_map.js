@@ -48,8 +48,8 @@ const projConverter = proj4("EPSG:2039");
 
 
 // load style for basemap
-fetch("js/IView_style.json")
-//fetch("js/IView_agol_style.json")
+//fetch("js/IView_style.json")
+fetch("js/IView_agol_style.json")
 .then(response => response.json())
 .then(style => {
   baseStyle = style;
