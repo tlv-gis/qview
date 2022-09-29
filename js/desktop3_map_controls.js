@@ -202,6 +202,11 @@ class LayerTable {
       tables.forEach(element => {
         tablesContent.append(element)
       })
+    }else{
+      let placeholder = document.createElement('p')
+      placeholder.innerText = "יש להוסיף שכבות למפה\n על מנת להציג את טבלאות הנתונים שלהן"
+      this.container.append(placeholder)
+
     }
     return this.container;
   }

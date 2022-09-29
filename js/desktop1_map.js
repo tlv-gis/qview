@@ -9,6 +9,7 @@ const baseUrl = "https://gisn.tel-aviv.gov.il/arcgis/rest/services/IView2/MapSer
 // innerUrl = "https://gisn.tel-aviv.gov.il/arcgis/rest/services/IView2/MapServer/"
 // outerUrl = "https://gisn.tel-aviv.gov.il/arcgis/rest/services/IView2/MapServer/"
 const cityBorderUrl = "https://gisn.tel-aviv.gov.il/arcgis/rest/services/IView2/MapServer/890/query?where=1%3D1&outFields=Shape&geometryPrecision=6&outSR=4326&returnExtentOnly=true&f=geojson"
+let env ={'active_layers':[]};
 let baseStyle;
 let QS;
 let map;
@@ -150,6 +151,7 @@ function onMapLoad(){
               
               
           });
+      addMapEvents()
       
       
 
@@ -213,7 +215,8 @@ function parseMap(QS,headerProperties={}){
     fetch(jsonUrl)
     .then(response => response.json())
     .then(data => {
-        mapJson = data
+        mapJson = data;
+        env.mapJson = data;
         if('title' in mapJson){
           headerProperties.title = mapJson['title'];
         }
@@ -224,7 +227,8 @@ function parseMap(QS,headerProperties={}){
             addTable = true;
           }
         });
-        tables = new LayerTable({'layers':mapJson.layers});
+        //tables = new LayerTable({'layers':mapJson.layers});
+        tables = new LayerTable({'layers':env.active_layers});
         map.addControl(mapHeaderControl);
         map.addControl(new maplibregl.NavigationControl());
         map.addControl(legendAdd)
@@ -277,6 +281,7 @@ function addButtons(mapJson){
                       let layer = mapJson["layers"].filter(obj => {
                           return obj.id === layerID
                         })[0]
+                      env.active_layers.push(layer)
                       map.setLayoutProperty(layer["name"],'visibility','visible')  
                       let strokeLayerName = layer['name']+'-stroke'
                       let labelLayerName = layer['name']+'-labels'
@@ -298,6 +303,15 @@ function addButtons(mapJson){
                         esriRenderer.updateRaster(sourceName)
                         
                       }
+                      map.once('sourcedataloading', function(e) {
+                          waitForSource(e,layer,function(){
+                            if(map.hasControl(tables)){
+                              map.removeControl(tables)
+                              tables = new LayerTable({'layers':env.active_layers});
+                              map.addControl(tables)
+                            }
+                          })
+                      });
                   }
                   
               }else{
@@ -308,6 +322,9 @@ function addButtons(mapJson){
                       layer = mapJson["layers"].filter(obj => {
                           return obj.id === layerID
                         })[0]
+                      env.active_layers = env.active_layers.filter(function( obj ) {
+                          return obj.id !== layerID;
+                      });
                       map.setLayoutProperty(layer["name"],'visibility','none')  
                       strokeLayerName = layer['name']+'-stroke'
                       labelLayerName = layer['name']+'-labels'
@@ -317,7 +334,17 @@ function addButtons(mapJson){
                       if(map.getLayer(labelLayerName) !== undefined){
                         map.setLayoutProperty(labelLayerName,'visibility','none')  
                       }  
+                      map.once('sourcedataloading', function(e) {
+                        waitForSource(e,layer,function(){
+                          if(map.hasControl(tables)){
+                            map.removeControl(tables)
+                            tables = new LayerTable({'layers':env.active_layers});
+                            map.addControl(tables)
+                          }
+                        })
+                    });
                   }
+                  
               }
               LegendBuilder.updateLegend(mapJson)
           })
@@ -349,6 +376,21 @@ function addButtonLayer(layerIDs,_callback){
   }
   if (_callback) {
       _callback();
+  }
+}
+function addMapEvents(){
+  map.on('sourcedataloading', function(e) {
+    
+  });
+}
+
+function waitForSource(e,layer,_callback){
+  let sourceName = layer['id']+'-source';
+  if(e.source.id == sourceName){
+    if(_callback){
+      _callback()
+    }
+    
   }
 }
 

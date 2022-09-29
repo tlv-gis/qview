@@ -15,6 +15,7 @@ let tableBuilder = (function(){
             mapTableDiv.innerHTML = ""
             map.removeControl(tables)
           }else{
+            tables = new LayerTable({'layers':env.active_layers});
             map.addControl(tables,'top-left')
             tableAddControl.title = "הסתרת טבלאות"
             //buildIcons(mapJson)
@@ -112,10 +113,13 @@ let tableBuilder = (function(){
       }
       element.style.backgroundColor = "#ddd";
       element.style.border = "1px solid rgb(255, 255, 255)"
+      layerName = rowData.source.replace('-source','')
+      layer = utils.getLayerByName(mapJson,layerName)
       map.setFeatureState(
           { source: rowData.source, id: rowData.id },
           { hover: true }
       );
+      layer.hoveredStateId = rowData.id;
       
       } catch (error) {
         console.log(error)
@@ -135,10 +139,12 @@ let tableBuilder = (function(){
       }
       element.style.backgroundColor = "";
       element.style.border = "";
-      map.setFeatureState(
-          { source: rowData.source, id: rowData.id },
-          { hover: false }
-      );
+      layerName = rowData.source.replace('-source','')
+      layer = utils.getLayerByName(mapJson,layerName)
+      map.removeFeatureState({
+        source: rowData.source
+        });
+      layer.hoveredStateId = null;
       
       } catch (error) {
         console.log(error)

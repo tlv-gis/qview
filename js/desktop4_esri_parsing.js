@@ -1027,21 +1027,29 @@ esriRenderer = (function(){
                     }
                 });
             }
+        }else{
+            if(env.active_layers.length> 0 ){
+                for(let l=0;l< env.active_layers.length;l++){
+                    layer = env.active_layers[l]
+
+                }
+                map.removeFeatureState({
+                    source: sourceName,
+                    id: layer.hoveredStateId
+                    },'hover');
+            }
         }
     }
     
 
    function highlightMouseOut(e){
-    console.log(e)
-    console.log(e.features)
+
     
         if (e.features.length > 0) {
             let layerName = e.features[0].layer['id']
             let sourceLayer = e.features[0].layer
             let sourceName = sourceLayer['id']+'-source';
             let layer = utils.getLayerByName(env.mapJson ,layerName)
-
-            console.log(layer)
 
             if (sourceLayer.hoveredStateId) {
                 map.removeFeatureState({
