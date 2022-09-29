@@ -87,7 +87,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="desktop2_utils.js.html">desktop2_utils.js</a>, <a href="desktop2_utils.js.html#line297">line 297</a>
+        <a href="desktop2_utils.js.html">desktop2_utils.js</a>, <a href="desktop2_utils.js.html#line307">line 307</a>
     </li></ul></dd>
     
 
@@ -268,7 +268,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="desktop2_utils.js.html">desktop2_utils.js</a>, <a href="desktop2_utils.js.html#line352">line 352</a>
+        <a href="desktop2_utils.js.html">desktop2_utils.js</a>, <a href="desktop2_utils.js.html#line371">line 371</a>
     </li></ul></dd>
     
 
@@ -450,7 +450,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="desktop2_utils.js.html">desktop2_utils.js</a>, <a href="desktop2_utils.js.html#line360">line 360</a>
+        <a href="desktop2_utils.js.html">desktop2_utils.js</a>, <a href="desktop2_utils.js.html#line379">line 379</a>
     </li></ul></dd>
     
 
@@ -511,7 +511,7 @@
     
 
     
-    <h4 class="name" id="~getLayer"><span class="type-signature">(inner) </span>getLayer<span class="signature">(id)</span><span class="type-signature"> &rarr; {object}</span></h4>
+    <h4 class="name" id="~getLayer"><span class="type-signature">(inner) </span>getLayer<span class="signature">(mapJson, id)</span><span class="type-signature"> &rarr; {<a href="global.html#mapJson-layer">mapJson-layer</a>}</span></h4>
     
 
     
@@ -551,6 +551,29 @@
     </thead>
 
     <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>mapJson</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#mapJson">mapJson</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">An object of <a href="global.html#mapJson">mapJson</a> type</td>
+        </tr>
+
     
 
         <tr>
@@ -612,7 +635,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="desktop2_utils.js.html">desktop2_utils.js</a>, <a href="desktop2_utils.js.html#line310">line 310</a>
+        <a href="desktop2_utils.js.html">desktop2_utils.js</a>, <a href="desktop2_utils.js.html#line320">line 320</a>
     </li></ul></dd>
     
 
@@ -652,7 +675,189 @@
     </dt>
     <dd>
         
-<span class="param-type">object</span>
+<span class="param-type"><a href="global.html#mapJson-layer">mapJson-layer</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="~getLayerByName"><span class="type-signature">(inner) </span>getLayerByName<span class="signature">(mapJson, name)</span><span class="type-signature"> &rarr; {<a href="global.html#mapJson-layer">mapJson-layer</a>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Get layer object from the current mapJson, by layer name
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>mapJson</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#mapJson">mapJson</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">An object of <a href="global.html#mapJson">mapJson</a> type</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">name of the layer as defined in the ArcGIS server service and as defined by the "name" key in the layer object.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="desktop2_utils.js.html">desktop2_utils.js</a>, <a href="desktop2_utils.js.html#line328">line 328</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    A layer object from the map configuration file.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="global.html#mapJson-layer">mapJson-layer</a></span>
 
 
     </dd>
@@ -904,7 +1109,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="desktop2_utils.js.html">desktop2_utils.js</a>, <a href="desktop2_utils.js.html#line413">line 413</a>
+        <a href="desktop2_utils.js.html">desktop2_utils.js</a>, <a href="desktop2_utils.js.html#line432">line 432</a>
     </li></ul></dd>
     
 
@@ -1114,7 +1319,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="desktop2_utils.js.html">desktop2_utils.js</a>, <a href="desktop2_utils.js.html#line403">line 403</a>
+        <a href="desktop2_utils.js.html">desktop2_utils.js</a>, <a href="desktop2_utils.js.html#line422">line 422</a>
     </li></ul></dd>
     
 
@@ -1273,7 +1478,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="desktop2_utils.js.html">desktop2_utils.js</a>, <a href="desktop2_utils.js.html#line317">line 317</a>
+        <a href="desktop2_utils.js.html">desktop2_utils.js</a>, <a href="desktop2_utils.js.html#line336">line 336</a>
     </li></ul></dd>
     
 
@@ -1432,7 +1637,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="desktop2_utils.js.html">desktop2_utils.js</a>, <a href="desktop2_utils.js.html#line345">line 345</a>
+        <a href="desktop2_utils.js.html">desktop2_utils.js</a>, <a href="desktop2_utils.js.html#line364">line 364</a>
     </li></ul></dd>
     
 
@@ -1591,7 +1796,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="desktop2_utils.js.html">desktop2_utils.js</a>, <a href="desktop2_utils.js.html#line396">line 396</a>
+        <a href="desktop2_utils.js.html">desktop2_utils.js</a>, <a href="desktop2_utils.js.html#line415">line 415</a>
     </li></ul></dd>
     
 
@@ -1746,7 +1951,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="desktop2_utils.js.html">desktop2_utils.js</a>, <a href="desktop2_utils.js.html#line302">line 302</a>
+        <a href="desktop2_utils.js.html">desktop2_utils.js</a>, <a href="desktop2_utils.js.html#line312">line 312</a>
     </li></ul></dd>
     
 
@@ -1905,7 +2110,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="desktop2_utils.js.html">desktop2_utils.js</a>, <a href="desktop2_utils.js.html#line324">line 324</a>
+        <a href="desktop2_utils.js.html">desktop2_utils.js</a>, <a href="desktop2_utils.js.html#line343">line 343</a>
     </li></ul></dd>
     
 
@@ -2064,7 +2269,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="desktop2_utils.js.html">desktop2_utils.js</a>, <a href="desktop2_utils.js.html#line331">line 331</a>
+        <a href="desktop2_utils.js.html">desktop2_utils.js</a>, <a href="desktop2_utils.js.html#line350">line 350</a>
     </li></ul></dd>
     
 
@@ -2246,7 +2451,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="desktop2_utils.js.html">desktop2_utils.js</a>, <a href="desktop2_utils.js.html#line338">line 338</a>
+        <a href="desktop2_utils.js.html">desktop2_utils.js</a>, <a href="desktop2_utils.js.html#line357">line 357</a>
     </li></ul></dd>
     
 
@@ -2298,7 +2503,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.11</a> on Mon Aug 22 2022 13:38:35 GMT+0300 (Israel Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.11</a> on Thu Sep 29 2022 13:01:52 GMT+0300 (Israel Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>

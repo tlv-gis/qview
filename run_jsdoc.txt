@@ -1,0 +1,4 @@
+from main folder run following command
+jsdoc ./js -d docs
+
+more options can be found here - https://jsdoc.app/about-commandline.html
