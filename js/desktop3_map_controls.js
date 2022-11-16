@@ -8,7 +8,7 @@ class MapHeader {
       params.location = params.location || '';
       params.showLocation = params.showLocation || 0;
       params.title = params.title || '';
-      this.title = params.title;
+      this.title = params.title || '';
       this.location = params.location;
       this.showLocation = params.showLocation;
     }
@@ -19,14 +19,28 @@ class MapHeader {
       this.container.style.margin = 0;
       let innerHTML = '<div ng-if="\'True\' ==\'True\'" class="ShhunaTitle ng-binding ng-scope" ng-bind-html="\'<b>מפת מרחב</b> הצג לפי:\'"><b>מפת מרחב</b> הצג לפי:</div>'
       
-
-     if(this.title.length > 0){
-      innerHTML = `<div class="ShhunaTitle"><b>${this.title}</b></div>`;
-     }else{
-      if(this.location.length > 0){
-        innerHTML = `<div class="ShhunaTitle"><b>מפת מרחב</b>: ${this.location}</div>`;  
-       }
-     }
+      console.log(this.title.length)
+      if(isMobile){
+        console.log(isMobile)
+        if(this.title.length > 0){
+          innerHTML = `<div class="ShhunaTitle"><img class="tlv-mobile-logo" src="./icons/logo.jpg">\
+          <div class="ShhunaTitle-text"><div class="ShhunaTitle-text-small">מפות</div>\n<b class="ShhunaTitle-text-large">${this.title}</b></div></div>`;
+         }else{
+          innerHTML =`<div class="ShhunaTitle"><img class="tlv-mobile-logo" src="./icons/logo.jpg">\
+          <div class="ShhunaTitle-text"><b class="ShhunaTitle-text-large">מפות</b></div></div>`;
+         }
+         console.log(isMobile)
+         console.log(innerHTML)
+      }else{
+        if(this.title.length > 0){
+          innerHTML = `<div class="ShhunaTitle"><b>${this.title}</b></div>`;
+         }else{
+          if(this.location.length > 0){
+            innerHTML = `<div class="ShhunaTitle"><b>מפת מרחב</b>: ${this.location}</div>`;  
+           }
+         }
+      }
+     
 
      this.container.innerHTML = innerHTML;
      
@@ -143,7 +157,7 @@ class FillerControl {
  onAdd(map){
     this.map = map;
     this.container = document.createElement('div');
-    this.container.className = 'mapboxgl-ctrl mapboxgl-ctrl-group';
+    this.container.className = 'mapboxgl-ctrl mapboxgl-ctrl-group filler-ctrl';
     this.container.innerHTML = ''
     this.container.style.height = `${this.height}px`
     this.container.style.width = `${this.width}px`
@@ -214,4 +228,31 @@ class LayerTable {
     this.container.parentNode.removeChild(this.container);
     this.map = undefined;
   }
+}
+
+/**
+ * Creates an empty control of defined height and width
+ * @class
+ */
+ class MobilePopup {
+  /*
+    Create the popup over the bottom half of the screen in mobile views
+  */
+ constructor(opts){
+    this.height = opts.height || 30;
+    this.width = opts.width || 30;
+ }
+ onAdd(map){
+    this.map = map;
+    this.container = document.createElement('div');
+    this.container.className = 'mapboxgl-ctrl mapboxgl-ctrl-group filler-ctrl';
+    this.container.innerHTML = ''
+    this.container.style.height = `${this.height}px`
+    this.container.style.width = `${this.width}px`
+    return this.container;
+ }
+ onRemove(){
+    this.container.parentNode.removeChild(this.container);
+    this.map = undefined;
+ }
 }
