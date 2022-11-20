@@ -13,7 +13,8 @@ utils = (function(){
         getAddressPoint: getAddressPoint,
         getStreetLine: getStreetLine,
         getLayerOID: getLayerOID,
-        getLayerFeature: getLayerFeature
+        getLayerFeature: getLayerFeature,
+        createLayerObjectFromID: createLayerObjectFromID
     }
 
     // generate unique ID
