@@ -249,15 +249,15 @@ utils = (function(){
         return buffered
     }
 
-    async function getAddressPoint(k_rechov,ms_bayit){
-        let url = `https://gisn.tel-aviv.gov.il/arcgis/rest/services/IView2/MapServer/527/query?where=k_rechov=${k_rechov}+AND+ms_bayit=${ms_bayit}&outFields=*&returnGeometry=true&geometryPrecision=7&outSR=4326&returnExtentOnly=false&f=geojson`
+    async function getAddressPoint(k_rechov,ms_bayit,service=addressServiceUrl){
+        let url = `${service}/query?where=k_rechov=${k_rechov}+AND+ms_bayit=${ms_bayit}&outFields=*&returnGeometry=true&geometryPrecision=7&outSR=4326&returnExtentOnly=false&f=geojson`
         let response = await fetch(url)
         let data = await response.json()
         return data;
     }
 
-    async function getStreetLine(k_rechov){
-        let url = `https://gisn.tel-aviv.gov.il/arcgis/rest/services/IView2/MapServer/527/query?where=k_rechov=${k_rechov}&returnGeometry=true&outSR=4326&returnExtentOnly=true&f=geojson`
+    async function getStreetLine(k_rechov,service=addressServiceUrl){
+        let url = `${service}/query?where=k_rechov=${k_rechov}&returnGeometry=true&outSR=4326&returnExtentOnly=true&f=geojson`
         let response = await fetch(url)
         let data = await response.json()
         let polygon = await turf.bboxPolygon(data.extent.bbox)
@@ -266,8 +266,8 @@ utils = (function(){
         
     }
 
-    async function getLayerOID(layer_id,service="https://gisn.tel-aviv.gov.il/arcgis/rest/services/IView2/MapServer"){
-        let url = service+'/'+ layer_id+'?f=json'
+    async function getLayerOID(layer_id,service=baseUrl){
+        let url = service+ layer_id+'?f=json'
         let response = await fetch(url)
         let data = await response.json()
         let fieldName = await data.fields[data.fields.findIndex(x => x.type === "esriFieldTypeOID")].name
@@ -303,6 +303,42 @@ utils = (function(){
             }
             
 
+    }
+
+    async function getFieldsFromMetadata(data){
+        let fields = {}
+        if(data.fields && data.fields.length > 0){
+            for(var i =0;i< data["fields"].length;i++){
+                fieldName = data["fields"][i]["name"]
+                fields[fieldName] = data["fields"][i]
+            }
+        }
+        return fields;
+    }
+
+    async function createLayerObjectFromID(id,service=baseUrl,config=mapJson){
+        try {
+            let layer = {
+                "id": id,
+                "name":`indie-layer-${id}`,
+                "fields":["*"],
+                "indie":true
+            }
+            let url = service+ id+'?f=json';
+            let response = await fetch(url);
+            let data = await response.json();   
+            layer.name_heb = await data.name;
+            layer.renderer = await data.drawingInfo.renderer;
+            layer.geomType = await data.geometryType
+            layer.metadata = await getFieldsFromMetadata(data);
+            await config.layers.push(layer)
+            await console.log(layer)
+            await esriRenderer.renderIndieLayer(layer)
+            return layer
+        } catch (error) {
+            
+        }
+        
     }
 })();
 /**
@@ -440,4 +476,14 @@ utils = (function(){
  * @param {Integer} [feature_id=1] - The ID of the feature to extract
  * @param {String} [where=""] Where clause for the query rest API
  * @return {GeoJson}
+ */
+/**
+ * create a [mapJson-layer]{@link mapJson-layer} object from a service and a layer ID.\n
+ * The layer ibject is created using metadata extracted from the service.
+ * Returns a GeoJson of 
+ * @function
+ * @name createLayerObjectFromID
+ * @param {Integer} layer_id - layer ID in the map/feature service
+ * @param {String} [service=baseUrl] - The service from which to extract features
+ * @return {mapJson-layer}
  */
