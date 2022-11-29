@@ -6,6 +6,7 @@ maplibregl.setRTLTextPlugin(
   );
 const isMobile = window.matchMedia("only screen and (max-width: 600px)").matches;
 const baseUrl = "https://gisn.tel-aviv.gov.il/arcgis/rest/services/IView2/MapServer/"
+const addressServiceUrl = "https://gisn.tel-aviv.gov.il/arcgis/rest/services/IView2/MapServer/527"
 // innerUrl = "https://gisn.tel-aviv.gov.il/arcgis/rest/services/IView2/MapServer/"
 // outerUrl = "https://gisn.tel-aviv.gov.il/arcgis/rest/services/IView2/MapServer/"
 const cityBorderUrl = "https://gisn.tel-aviv.gov.il/arcgis/rest/services/IView2/MapServer/890/query?where=1%3D1&outFields=Shape&geometryPrecision=6&outSR=4326&returnExtentOnly=true&f=geojson"
@@ -131,6 +132,7 @@ function onMapLoad(){
               
                 
             }).then(function(){
+              loadIndieLayers(QS)
               parseMap(QS,headerProperties)
             });
           }else if(radiusPolygon){
@@ -142,9 +144,11 @@ function onMapLoad(){
               linear:true
               })
             parseMap(QS)
+            loadIndieLayers(QS)
           }else{
               current_bounds = turf.bboxPolygon(city_bounds.extent.bbox);
               parseMap(QS)
+              loadIndieLayers(QS)
           }
               
             
@@ -199,6 +203,55 @@ function createFilter(QS){
     utils.getLayerFeature(baseUrl,QS.layer,QS.feature)
     .then(polygon => radiusPolygon = polygon)
   }
+}
+/**
+     * Loads independent map layers without loading a [mapjson]{@link mapJson} Object\n
+     * Added layers are loaded using the layer ID and the spatial filter.\n\n
+     * TODO: add URL parameter for collapsable default leaflet layer list.
+     * @function
+     * @name loadIndieLayers
+     * @param {Object} QS - The Object created from the query string (url parameters)
+    */
+let layerObjects
+let layerObjects2
+function loadIndieLayers(QS){
+  try {
+    if("layers" in QS){
+      let layers = QS.layers.split(',')
+      layers.forEach(function(x, i, Array) {
+        Array[i] = Number(x);
+      });
+      QS.layers = layers;
+      QS.layers.map(id => {
+        drawIndieLayer(id)
+      })
+      
+      /*console.log(layerObjects2)
+      for(let i=0;i<QS.layers.length;i++){
+        let id = QS.layers[i]
+        console.log(id)
+        let layer = await utils.createLayerObjectFromID(id,service=baseUrl,mapJson)
+        layer = await drawIndieLayer(layer)
+        
+      }*/
+  
+    }
+  } catch (error) {
+    
+  }
+  
+}
+
+async function drawIndieLayer(id){
+  console.log(id)
+  let layer = await utils.createLayerObjectFromID(id)
+  let renderer = await layer.renderer
+  if(await renderer.type === "simple"){
+      esriRenderer.parseSimpleRenderer(renderer,layer,'visible')
+  }else if(await renderer.type === "uniqueValue"){
+      esriRenderer.parseUniqueValueRenderer(renderer,layer,'visible')
+  }
+  return layer
 }
 
 function parseMap(QS,headerProperties={}){
