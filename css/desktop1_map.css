@@ -126,7 +126,7 @@ body {
     margin-top: 5px;
 }
 .button > span{
-    margin-left:3px;
+    margin-left:auto;
     color: black;
 }
 .button:hover{
@@ -135,7 +135,7 @@ body {
     
 }
 .button:hover > span{
-    margin-left:3px;
+    
     color: white;
 }
 .button:hover > img{
@@ -244,6 +244,13 @@ body {
     margin-bottom: 5px;
     white-space: nowrap;
 }
+.tlv-mobile-logo{
+    width: 63.7%;
+    height: 63%;
+    padding-top: 9.15%;
+    padding-right: 9%;
+    float: right;
+}
 .gis-icons {
     text-align: right;
     list-style: none;
@@ -343,6 +350,10 @@ body {
         height: 38px;
         line-height: 42px;
     }
+    .icon{
+        margin-right:3px;
+        
+    }
     
 }
 
@@ -357,17 +368,4 @@ body {
         background-position: left top;
         /*top: 70px;*/
     }
-}
-
-@media (min-width: 768px){
-    /*
-    .gis-header {
-        height: 80px;
-    }
-    */
-    /*
-    .gis-map {
-        top: 80px;
-    }
-    */
 }

@@ -21,7 +21,8 @@ class MapHeader {
       
       console.log(this.title.length)
       if(isMobile){
-        console.log(isMobile)
+        //console.log(isMobile)
+        /*
         if(this.title.length > 0){
           innerHTML = `<div class="ShhunaTitle"><img class="tlv-mobile-logo" src="./icons/logo.jpg">\
           <div class="ShhunaTitle-text"><div class="ShhunaTitle-text-small">מפות</div>\n<b class="ShhunaTitle-text-large">${this.title}</b></div></div>`;
@@ -30,7 +31,8 @@ class MapHeader {
           <div class="ShhunaTitle-text"><b class="ShhunaTitle-text-large">מפות</b></div></div>`;
          }
          console.log(isMobile)
-         console.log(innerHTML)
+         console.log(innerHTML)*/
+         innerHTML =`<div class="ShhunaTitle"><img class="tlv-mobile-logo" src="./icons/logo.jpg"></div>`;
       }else{
         if(this.title.length > 0){
           innerHTML = `<div class="ShhunaTitle"><b>${this.title}</b></div>`;
