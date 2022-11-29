@@ -32,7 +32,7 @@ class MapHeader {
          }
          console.log(isMobile)
          console.log(innerHTML)*/
-         innerHTML =`<div class="ShhunaTitle"><img class="tlv-mobile-logo" src="./icons/logo.jpg"></div>`;
+         innerHTML =`<div class="ShhunaTitle"><img class="tlv-mobile-logo" src="./icons/logo_new_design.png"></div>`;
       }else{
         if(this.title.length > 0){
           innerHTML = `<div class="ShhunaTitle"><b>${this.title}</b></div>`;
