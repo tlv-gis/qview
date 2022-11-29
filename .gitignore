@@ -2,3 +2,5 @@
 js/maplibre_esri.js
 out/*
 out/*/*
+new_icons/*
+new_icons/*/*
