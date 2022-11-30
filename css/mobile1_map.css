@@ -190,7 +190,7 @@ nav .drop-down li:first-child button:after {
     font-size: 21px;
     color: #2b393f;
     background-color: transparent;
-    
+    margin-top: 3%;
     margin-left: auto;
     margin-right: auto;
 
@@ -213,15 +213,18 @@ nav .drop-down li:first-child button:after {
     width: 16vw;
     height: 6.7vh;
     font-size: 11px;
+    overflow-y: hidden;
 }
 .button > span{
     font-family: 'Assistant';
+    line-height: 10px;
     font-size: 11px;
     width: 95%;
     position: relative;
     margin-top: 3px;
     text-align: center;
     color: black;
+    padding-right: 2.5%;
 }
 .button:hover{
     background-color: rgb(48, 48, 48); 
