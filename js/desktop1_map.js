@@ -233,7 +233,7 @@ function parseMap(QS,headerProperties={}){
         map.addControl(new maplibregl.NavigationControl());
         map.addControl(legendAdd)
         if(addTable){
-          map.addControl(tableAdd)
+          //map.addControl(tableAdd)
         }
         addButtons(mapJson)
     })
