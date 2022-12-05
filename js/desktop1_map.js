@@ -231,7 +231,9 @@ function parseMap(QS,headerProperties={}){
         tables = new LayerTable({'layers':env.active_layers});
         map.addControl(mapHeaderControl);
         map.addControl(new maplibregl.NavigationControl());
-        map.addControl(legendAdd)
+        if(!isMobile){
+          map.addControl(legendAdd)
+        }
         if(addTable){
           map.addControl(tableAdd)
         }
@@ -247,15 +249,16 @@ function addButtons(mapJson){
   let buttonDefs = mapJson['buttons']
   let buttonSpan
   if(isMobile){
-    console.log(1)
     buttonSpan = addMobileButtons(buttonDefs,mapJson)
   }else{
-    console.log(0)
+    map.addControl(new FillerControl({'height':mapHeaderControl.container.offsetHeight-10}),'top-right')
     buttonSpan = addDesktopButtons(buttonDefs,mapJson)
   }
   
   mapHeader.append(buttonSpan)
-  map.addControl(new FillerControl({'height':mapHeaderControl.container.offsetHeight-10}),'top-right')
+  if(isMobile){
+    map.addControl(legend,'bottom-right')
+  }
 
 }
 function addDesktopButtons(buttonDefs,mapJson){
