@@ -95,9 +95,9 @@ let LegendBuilder = (function(){
         var opaqueSymbolsText = document.createElement('b')
         opaqueSymbolsText.innerHTML = "<hr>* שכבה עם שקיפות"
         LegendContent.append(opaqueSymbolsText)
-      mapLegendDiv.append(LegendContent)
-    }
-
+        mapLegendDiv.append(LegendContent)
+      }
+      
     }
 
     function buildLayerIconsList(layer){
@@ -239,9 +239,11 @@ let LegendBuilder = (function(){
       icon.className = "fg-polygon fg-2x";
       
       var fillColor = symbol.fillColor ? symbol.fillColor : "#fff";
-      var fillOpacity = symbol.fillOpacity ? symbol.fillOpacity : 0.1;
-      icon.style.color = fillColor;
-      icon.style.opacity = fillOpacity;
+      //var fillOpacity = symbol.fillOpacity ? symbol.fillOpacity : 0.1;
+      var legendColor = symbol.legendColor ? symbol.legendColor : "#fff";
+      
+      icon.style.color = legendColor;
+      //icon.style.opacity = fillOpacity;
 
       if(symbol.strokeColor){
         var strokeColor = symbol.strokeColor ? symbol.strokeColor : "#000";
