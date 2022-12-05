@@ -65,7 +65,7 @@ utils = (function(){
         var params = {
             where:'1=1',
             returnGeometry:true,
-            geometryPrecision:6,
+            geometryPrecision:7,
             outSR:4326,
             f:'json',
             returnIdsOnly:true,
@@ -95,7 +95,7 @@ utils = (function(){
         
 
         url = baseUrl+layer["id"]
-        url += "/query?where=1%3D1&returnGeometry=true&geometryPrecision=6&outSR=4326&f=geojson"
+        url += "/query?where=1%3D1&returnGeometry=true&geometryPrecision=7&outSR=4326&f=geojson"
         url += "&inSR=4326&geometryType=esriGeometryEnvelope&geometry="+turf.bbox(turf.buffer(current_bounds,100,{units: 'meters'}))
 
         
@@ -147,7 +147,7 @@ utils = (function(){
                 var params = {
                     where:'1=1',
                     returnGeometry:true,
-                    geometryPrecision:6,
+                    geometryPrecision:7,
                     outSR:4326,
                     f:'geojson',
                     objectIds: ids.join()

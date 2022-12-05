@@ -14,6 +14,9 @@ let LegendBuilder = (function(){
           mapLegendDiv.innerHTML = ""
           map.removeControl(legend)
         }else{
+          if(isMobile){
+            map.addControl(legend, 'bottom-right')
+          }
           map.addControl(legend)
           legendAddControl.title = "כיבוי מקרא"
           buildIcons(mapJson)
@@ -48,7 +51,7 @@ let LegendBuilder = (function(){
 
     function buildIcons(mapJson){
       var mapLegendDiv = document.getElementById("map-legend")
-      var LegendContent = document.createElement('span')
+      
       var layersVisible = 0;
       var opaqueSymbols = 0;
       for(var i=0;i<mapJson.layers.length;i++){
@@ -56,26 +59,45 @@ let LegendBuilder = (function(){
         if(map.getLayer(layer["name"])){
           var layerShown = map.getLayoutProperty(layer["name"],'visibility')
           if(layerShown === "visible" ){
+            let LegendContent = document.createElement('span')
             layersVisible++
-            var layerHeader = document.createElement('h4');
+            let layerHeader = document.createElement('h4');
+            layerHeader.classList.add('legend-layer-name')
             layerHeader.innerHTML = layer["name_heb"]
             LegendContent.append(layerHeader)
-            var layerIconsList = buildLayerIconsList(layer)
+            if(isMobile){
+              let layerLine = document.createElement('i');
+              layerLine.classList.add('legend-line');
+              layerLine.innerText = '|'
+              LegendContent.append(layerLine)
+            }
+            let layerIconsList = buildLayerIconsList(layer)
             LegendContent.append(layerIconsList)
+            if(isMobile){
+              let endLine = document.createElement('i');
+              endLine.classList.add('legend-line');
+              endLine.innerText = '|'
+              LegendContent.append(endLine)
+            }
+            mapLegendDiv.append(LegendContent)
           }
         }
       }
       if(layersVisible === 0 ){
+        var LegendContent = document.createElement('span')
         var noVisible = document.createElement('span')
         noVisible.innerText = "יש להוסיף שכבות למפה\nבשביל לראות מקרא"
         LegendContent.append(noVisible)
+        mapLegendDiv.append(LegendContent)
       }
       if(opaqueSymbols){
+        var LegendContent = document.createElement('span')
         var opaqueSymbolsText = document.createElement('b')
         opaqueSymbolsText.innerHTML = "<hr>* שכבה עם שקיפות"
         LegendContent.append(opaqueSymbolsText)
+        mapLegendDiv.append(LegendContent)
       }
-      mapLegendDiv.append(LegendContent)
+      
     }
 
     function buildLayerIconsList(layer){
@@ -87,9 +109,10 @@ let LegendBuilder = (function(){
 
           if(layer.type && layer.type === "raster"){
             var symbolListItem = document.createElement('li');
+            symbolListItem.classList.add('legend-item')
             var symbol = layer.symbols[i]
             var icon = buildPointIcon(symbol)
-            var iconText = " - ";
+            var iconText = "  ";
             if(symbol.value && symbol.value === "default"){
               if(layer.symbols.length === 1){
                 iconText += "כל השכבה"
@@ -99,21 +122,24 @@ let LegendBuilder = (function(){
             }else{
               iconText += symbol.label
             }
-            symbolListItem.append(icon,iconText)
+            let iconTextDiv = document.createElement('div')
+            iconTextDiv.innerText = iconText
+            symbolListItem.append(icon,iconTextDiv)
             layerList.append(symbolListItem)
           }
 
           if(layer.geomType && layer.geomType === "esriGeometryPolygon"){
 
             var symbolListItem = document.createElement('li');
+            symbolListItem.classList.add('legend-item')
             var symbol = layer.symbols[i]
             var icon = buildPolygonIcon(symbol)
             var iconText = "";
             if(symbol.fillOpacity < 1){
               opaqueSymbols = 1;
-              iconText += "* - ";
+              iconText += " * ";
             }else{
-              iconText += " - ";
+              iconText += "  ";
             }
             if(symbol.value && symbol.value === "default"){
               if(layer.symbols.length === 1){
@@ -125,21 +151,24 @@ let LegendBuilder = (function(){
             }else{
               iconText += symbol.label
             }
-            symbolListItem.append(icon,iconText)
+            let iconTextDiv = document.createElement('div')
+            iconTextDiv.innerText = iconText
+            symbolListItem.append(icon,iconTextDiv)
             layerList.append(symbolListItem)
 
           }
           else if(layer.geomType && layer.geomType === "esriGeometryPolyline"){
 
             var symbolListItem = document.createElement('li');
+            symbolListItem.classList.add('legend-item')
             var symbol = layer.symbols[i]
             var icon = buildLineIcon(symbol)
             var iconText = "";
             if(symbol.lineOpacity < 1){
               opaqueSymbols = 1;
-              iconText += "* - ";
+              iconText += " * ";
             }else{
-              iconText += " - ";
+              iconText += "  ";
             }
             if(symbol.value && symbol.value === "default"){
               if(layer.symbols.length === 1){
@@ -150,26 +179,31 @@ let LegendBuilder = (function(){
             }else{
               iconText += symbol.label
             }
-            symbolListItem.append(icon,iconText)
+            let iconTextDiv = document.createElement('div')
+            iconTextDiv.innerText = iconText
+            symbolListItem.append(icon,iconTextDiv)
             layerList.append(symbolListItem)
 
           }
           else if(layer.geomType && layer.geomType === "esriGeometryPoint"){
 
             var symbolListItem = document.createElement('li');
+            symbolListItem.classList.add('legend-item')
             var symbol = layer.symbols[i]
             var icon = buildPointIcon(symbol)
-            var iconText = " - ";
+            var iconText = "  ";
             if(symbol.value && symbol.value === "default"){
               if(layer.symbols.length === 1){
-                iconText += "כל הנקודות"
+                iconText += " כל הנקודות"
               }else{
                 iconText += layer["renderer"]["defaultLabel"] ? layer["renderer"]["defaultLabel"] : "אחר";
               }
             }else{
               iconText += symbol.label
             }
-            symbolListItem.append(icon,iconText)
+            let iconTextDiv = document.createElement('div')
+            iconTextDiv.innerText = iconText
+            symbolListItem.append(icon,iconTextDiv)
             layerList.append(symbolListItem)
 
           }
@@ -180,6 +214,7 @@ let LegendBuilder = (function(){
 
     function buildPointIcon(symbol){
       var icon = document.createElement('img');
+      icon.classList.add('legend-icon')
       icon.src = symbol.imageData;
       return icon;
 
@@ -187,6 +222,7 @@ let LegendBuilder = (function(){
 
     function buildLineIcon(symbol){
       var icon = document.createElement('i');
+      icon.classList.add('legend-icon');
       icon.className = "fg-polyline fg-2x";
       
       var strokeColor = symbol.strokeColor ? symbol.strokeColor : "#fff";
@@ -199,12 +235,15 @@ let LegendBuilder = (function(){
 
     function buildPolygonIcon(symbol){
       var icon = document.createElement('i');
+      icon.classList.add('legend-icon');
       icon.className = "fg-polygon fg-2x";
       
       var fillColor = symbol.fillColor ? symbol.fillColor : "#fff";
-      var fillOpacity = symbol.fillOpacity ? symbol.fillOpacity : 0.1;
-      icon.style.color = fillColor;
-      icon.style.opacity = fillOpacity;
+      //var fillOpacity = symbol.fillOpacity ? symbol.fillOpacity : 0.1;
+      var legendColor = symbol.legendColor ? symbol.legendColor : "#fff";
+      
+      icon.style.color = legendColor;
+      //icon.style.opacity = fillOpacity;
 
       if(symbol.strokeColor){
         var strokeColor = symbol.strokeColor ? symbol.strokeColor : "#000";

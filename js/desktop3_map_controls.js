@@ -3,7 +3,7 @@
  * @class
  * @param {Object} params - an object containing keys for `location`, `showLocation` and `title`  
  */
-class MapHeader {
+ class MapHeader {
   constructor(params) {
       params.location = params.location || '';
       params.showLocation = params.showLocation || 0;
@@ -79,6 +79,7 @@ class MapLegendButton {
     this.map = undefined;
   }
 }
+
 
 class MapChangeBoundsButton {
   onAdd(map){

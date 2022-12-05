@@ -359,6 +359,7 @@ esriRenderer = (function(){
                 var sourceName =  layer['name']+"-source";
                 var layerUrl = utils.getLayerUrl(layer);
                 var fillColor = "rgb("+renderer.symbol.color.slice(0,3).join()+")";
+                var legendColor = "rgba("+renderer.symbol.color.slice(0,3).join()+","+layer["opacity"] ? layer["opacity"] : utils.parseOpacity(renderer.symbol.color[3])+")";
                 var fillOpacity = layer["opacity"] ? layer["opacity"] : utils.parseOpacity(renderer.symbol.color[3]);
                 var strokeLayerName = layer['name']+'-stroke'
                 var labelLayerName = layer['name']+'-labels'
@@ -369,7 +370,8 @@ esriRenderer = (function(){
                     {   
                         "value":"default",
                         "fillColor":fillColor,
-                        "fillOpacity":fillOpacity
+                        "fillOpacity":fillOpacity,
+                        "legendColor":legendColor
                     }
                 ]
                 if(renderer.symbol.outline.width > 0.1 || renderer.symbol.outline.color[3] < 1){
