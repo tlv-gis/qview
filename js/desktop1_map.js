@@ -266,7 +266,7 @@ function addButtons(mapJson){
   
   mapHeader.append(buttonSpan)
   if(isMobile){
-    map.addControl(legend,'bottom-right')
+    //map.addControl(legend,'bottom-right')
   }
 
 }
@@ -511,6 +511,7 @@ function addMobileButtons(buttonDefs,mapJson){
               }
               
           }
+          LegendBuilder.addLegend()
           LegendBuilder.updateLegend(mapJson)
       })
   }

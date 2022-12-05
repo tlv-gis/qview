@@ -5,19 +5,22 @@ let LegendBuilder = (function(){
       updateLegend:updateLegend
     }
 
-    function addLegend(e){
+    function addLegend(){
       try{
-        e.stopPropagation()
+        //e.stopPropagation()
         var legendAddControl = document.getElementById("add-map-legend-button")
         var mapLegendDiv = document.getElementById("map-legend")
         if(map.hasControl(legend)){
           mapLegendDiv.innerHTML = ""
-          map.removeControl(legend)
+          if(env.active_layers.length <= 0){
+            map.removeControl(legend)
+          }
         }else{
           if(isMobile){
             map.addControl(legend, 'bottom-right')
+          }else{
+            map.addControl(legend)
           }
-          map.addControl(legend)
           legendAddControl.title = "כיבוי מקרא"
           buildIcons(mapJson)
         }
