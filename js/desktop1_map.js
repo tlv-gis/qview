@@ -31,7 +31,13 @@ let topPadding;
 let jsonUrl;
 let buttonDefs;
 let legendAdd;
-let legend = new MapLegend();;
+let legend = new MapLegend();
+let locateMeControl = new maplibregl.GeolocateControl({
+  positionOptions: {
+  enableHighAccuracy: true
+  },
+  trackUserLocation: true
+  })
 let changeBounds;
 let tableAdd;
 
@@ -224,15 +230,18 @@ function parseMap(QS,headerProperties={}){
         let addTable = false;
         mapJson.layers.forEach(element => {
           if("table" in element){
-            addTable = true;
+            //addTable = true;
           }
         });
         //tables = new LayerTable({'layers':mapJson.layers});
         tables = new LayerTable({'layers':env.active_layers});
         map.addControl(mapHeaderControl);
-        map.addControl(new maplibregl.NavigationControl());
         if(!isMobile){
           map.addControl(legendAdd)
+          map.addControl(new maplibregl.NavigationControl());
+        }else{
+          map.addControl(locateMeControl);
+          locateMeControl._container.classList.add('locate-container');
         }
         if(addTable){
           map.addControl(tableAdd)

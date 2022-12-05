@@ -80,30 +80,6 @@ class MapLegendButton {
   }
 }
 
-/**
- * Creates button to show user location
- * @class
- */
- class LocateMeButton {
-  constructor(opts){
-    this.opts = opts;
- }
-  onAdd(map){
-    this.map = map;
-    this.container = document.createElement('div');
-    this.container.id = "locate-button"
-    this.container.className = 'mapboxgl-ctrl mapboxgl-ctrl-group map-locate-button';
-    this.container.innerHTML = '<img src="icons/locate.svg"/>';
-    this.container.title = "הצגת המיקום שלי"
-    this.container.value = 0;
-    //this.container.onclick = this.LegendBuilder.addLegend
-    return this.container;
-  }
-  onRemove(){
-    this.container.parentNode.removeChild(this.container);
-    this.map = undefined;
-  }
-}
 
 class MapChangeBoundsButton {
   onAdd(map){

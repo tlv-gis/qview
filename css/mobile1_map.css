@@ -205,7 +205,21 @@ body {
     color: #444444;
     margin-left: 10px;
 }
-
+.mapboxgl-ctrl button.mapboxgl-ctrl-geolocate .mapboxgl-ctrl-icon {
+    background-image: url("../icons/locate.svg");
+    background-size: 60%;
+}
+.mapboxgl-ctrl button.mapboxgl-ctrl-geolocate{
+    width: 4vh;
+    height: 4vh;
+    background: #FFFFFF;
+    border-radius: 5.64539px;
+    transform: matrix(-1, 0, 0, 1, 0, 0);
+}
+.locate-container{
+    box-shadow: 0 0 0 0px rgba(0,0,0,0) !important;
+    margin-top: 0 !important;
+}
 #gis-map { 
     position: absolute; 
     bottom: 0; 
