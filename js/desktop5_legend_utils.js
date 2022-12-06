@@ -21,10 +21,14 @@ let LegendBuilder = (function(){
           }else{
             map.addControl(legend)
           }
-          legendAddControl.title = "כיבוי מקרא"
+          if(legendAddControl){
+            legendAddControl.title = "כיבוי מקרא"
+          }
           buildIcons(mapJson)
         }
-        switchIcon(legendAddControl)
+        if(legendAddControl){
+          switchIcon(legendAddControl)
+        }
         
       }
       catch (err) {

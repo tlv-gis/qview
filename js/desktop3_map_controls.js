@@ -19,7 +19,6 @@
       this.container.style.margin = 0;
       let innerHTML = '<div ng-if="\'True\' ==\'True\'" class="ShhunaTitle ng-binding ng-scope" ng-bind-html="\'<b>מפת מרחב</b> הצג לפי:\'"><b>מפת מרחב</b> הצג לפי:</div>'
       
-      console.log(this.title.length)
       if(isMobile){
         //console.log(isMobile)
         /*
