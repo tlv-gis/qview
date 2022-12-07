@@ -248,8 +248,11 @@ esriRenderer = (function(){
                             if(map.getLayer(layer['name']) === undefined){
                                 map.addLayer(layerJson);
                                 addHighlightLayer(layer)
-        
-                                addPopupEvent(layer)
+                                if(isMobile){
+                                    addMobilePopupEvent(layer)
+                                }else{
+                                    addPopupEvent(layer)
+                                }
                                     
                                 addMapHoverEvents(layer)
 
@@ -272,7 +275,11 @@ esriRenderer = (function(){
                                 map.addLayer(layerJson);
                                 addHighlightLayer(layer)
         
-                                addPopupEvent(layer)
+                                if(isMobile){
+                                    addMobilePopupEvent(layer)
+                                }else{
+                                    addPopupEvent(layer)
+                                }
                                     
                                 addMapHoverEvents(layer)
 
@@ -332,7 +339,11 @@ esriRenderer = (function(){
                         map.addLayer(layerJson);
                         addHighlightLayer(layer)
 
-                        addPopupEvent(layer)
+                        if(isMobile){
+                            addMobilePopupEvent(layer)
+                        }else{
+                            addPopupEvent(layer)
+                        }
                             
                         addMapHoverEvents(layer)
 
@@ -429,7 +440,11 @@ esriRenderer = (function(){
                         map.addLayer(layerJson);
                         addHighlightLayer(layer)
 
-                        addPopupEvent(layer)
+                        if(isMobile){
+                            addMobilePopupEvent(layer)
+                        }else{
+                            addPopupEvent(layer)
+                        }
                             
                         addMapHoverEvents(layer)
 
@@ -642,7 +657,11 @@ esriRenderer = (function(){
                 map.addLayer(layerJson);
                 addHighlightLayer(layer)
 
-                addPopupEvent(layer)
+                if(isMobile){
+                    addMobilePopupEvent(layer)
+                }else{
+                    addPopupEvent(layer)
+                }
                     
                 addMapHoverEvents(layer)
 
@@ -742,7 +761,11 @@ esriRenderer = (function(){
                 map.addLayer(layerJson);
                 addHighlightLayer(layer)
 
-                addPopupEvent(layer)
+                if(isMobile){
+                    addMobilePopupEvent(layer)
+                }else{
+                    addPopupEvent(layer)
+                }
                     
                 addMapHoverEvents(layer)
 
@@ -865,7 +888,11 @@ esriRenderer = (function(){
                 map.addLayer(layerJson);
                 addHighlightLayer(layer)
 
-                addPopupEvent(layer)
+                if(isMobile){
+                    addMobilePopupEvent(layer)
+                }else{
+                    addPopupEvent(layer)
+                }
                     
                 addMapHoverEvents(layer)
                 if(drawOutline && map.getLayer(strokeLayerName) === undefined){
@@ -1222,8 +1249,30 @@ esriRenderer = (function(){
     function addPopupEvent(layer){
 
         map.on('click', layer['name'], function (e) {
+
+            popupContent = buildDesktopPopup(e,layer)
             
-            popupContent = '<p dir="rtl">'
+            popup.setHTML(popupContent)
+            popup.setLngLat(e.lngLat)
+            popup.addTo(map)
+        });
+
+    }
+
+    function addMobilePopupEvent(layer){
+        map.on('click', layer['name'], function (e) {
+            popupContent = buildMobilePopup(e,layer)
+
+            infoControl.container.classList.remove('minimized')
+            infoControl.container.innerHTML = popupContent
+
+        })
+    }
+
+
+    function buildDesktopPopup(e,layer){
+
+        popupContent = '<p dir="rtl">'
             feature = e.features[0]
             if('label_field' in layer){
                 popupContent += '<table class="popup-table">'
@@ -1255,11 +1304,45 @@ esriRenderer = (function(){
                 popupContent += "</table>"
             }
             popupContent += "</p>"
-            popup.setHTML(popupContent)
-            popup.setLngLat(e.lngLat)
-            popup.addTo(map)
-        });
+        
+            return popupContent
+    }
 
+    function buildMobilePopup(e,layer){
+        popupContent = '<p dir="rtl">'
+            feature = e.features[0]
+            if('label_field' in layer){
+                popupContent += '<table class="popup-table">'
+                popupContent += '<tr><th colspan="2">'+feature.properties[layer['label_field']]+"</th></tr>"
+                popupContent += "<tr><th>שם שדה</th><th>ערך</th></tr>"
+            }else{
+                popupContent += '<table class="popup-table">'
+                popupContent += "<tr><th>שם שדה</th><th>ערך</th></tr>"
+            }
+            if('fields' in layer){
+                requiredFields = layer['fields']
+                if(requiredFields.indexOf('*') > -1){
+                    requiredFields = Object.keys(feature.properties)
+                }
+                for(var i=0; i < requiredFields.length; i++){
+                    fieldName = layer["metadata"][requiredFields[i]]["alias"]
+                    fieldType = layer["metadata"][requiredFields[i]]["type"]
+                    if(feature.properties[requiredFields[i]] && 
+                        feature.properties[requiredFields[i]] != "null"){
+                        if(fieldType === "esriFieldTypeDate"){
+                            dateString = new Date(feature.properties[requiredFields[i]]).toLocaleString("he-IL")
+                            popupContent += "<tr><td>"+fieldName+"</td><td>"+dateString+"</td></tr>"    
+                        }else{
+                            popupContent += "<tr><td>"+fieldName+"</td><td>"+feature.properties[requiredFields[i]]+"</td></tr>"
+                        }
+                        
+                    }
+                }
+                popupContent += "</table>"
+            }
+            popupContent += "</p>"
+        
+            return popupContent
     }
 
     /*

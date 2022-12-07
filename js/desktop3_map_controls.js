@@ -120,6 +120,28 @@ class MapLegend {
 }
 
 /**
+ * Container control for map legend
+ * @class
+ */
+ class InfoControl {
+  onAdd(map){
+    this.map = map;
+    this.container = document.createElement('div');
+    this.container.id = "info-control"
+    this.container.className = 'mapboxgl-ctrl mapboxgl-ctrl-group info-ctrl minimized';
+    this.container.innerHTML = '';
+    this.container.onclick = function(e){
+      e.stopPropagation()
+    }
+    return this.container;
+  }
+  onRemove(){
+    this.container.parentNode.removeChild(this.container);
+    this.map = undefined;
+  }
+}
+
+/**
  * Creates button to show and hide the map table container.
  * @class
  */

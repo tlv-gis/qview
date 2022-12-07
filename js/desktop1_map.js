@@ -38,6 +38,7 @@ let locateMeControl = new maplibregl.GeolocateControl({
   },
   trackUserLocation: true
   })
+let infoControl = new InfoControl()
 let changeBounds;
 let tableAdd;
 
@@ -240,6 +241,7 @@ function parseMap(QS,headerProperties={}){
           map.addControl(legendAdd)
           map.addControl(new maplibregl.NavigationControl());
         }else{
+          map.addControl(infoControl,'bottom-right')
           map.addControl(locateMeControl);
           locateMeControl._container.classList.add('locate-container');
         }
@@ -549,6 +551,14 @@ function addMapEvents(){
   map.on('sourcedataloading', function(e) {
     
   });
+  map.on('click',function(e){
+    let renderedFeatures = map.queryRenderedFeatures(e.point,{layers: env.active_layers.map(layer => layer.name) })
+    if(renderedFeatures.length < 1){
+      if(!infoControl.container.classList.contains('minimized')){
+        infoControl.container.classList.add('minimized')
+      }
+    }
+  })
 }
 
 function waitForSource(e,layer,_callback){
