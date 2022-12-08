@@ -1309,15 +1309,11 @@ esriRenderer = (function(){
     }
 
     function buildMobilePopup(e,layer){
-        popupContent = '<p dir="rtl">'
+        popupContent = ''
             feature = e.features[0]
-            if('label_field' in layer){
-                popupContent += '<table class="popup-table">'
+            popupContent += '<table class="info-table">'
+            if('label_field' in layer){   
                 popupContent += '<tr><th colspan="2">'+feature.properties[layer['label_field']]+"</th></tr>"
-                popupContent += "<tr><th>שם שדה</th><th>ערך</th></tr>"
-            }else{
-                popupContent += '<table class="popup-table">'
-                popupContent += "<tr><th>שם שדה</th><th>ערך</th></tr>"
             }
             if('fields' in layer){
                 requiredFields = layer['fields']
@@ -1333,14 +1329,18 @@ esriRenderer = (function(){
                             dateString = new Date(feature.properties[requiredFields[i]]).toLocaleString("he-IL")
                             popupContent += "<tr><td>"+fieldName+"</td><td>"+dateString+"</td></tr>"    
                         }else{
-                            popupContent += "<tr><td>"+fieldName+"</td><td>"+feature.properties[requiredFields[i]]+"</td></tr>"
+                            if(fieldName == 'אתר אינטרנט'){
+                                popupContent += `<tr><td>${fieldName}</td><td><a href="${feature.properties[requiredFields[i]]}">${feature.properties[requiredFields[i]]}</a></td></tr>`
+                            }else{
+                                popupContent += "<tr><td>"+fieldName+"</td><td>"+feature.properties[requiredFields[i]]+"</td></tr>"
+                            }
                         }
                         
                     }
                 }
                 popupContent += "</table>"
             }
-            popupContent += "</p>"
+            
         
             return popupContent
     }

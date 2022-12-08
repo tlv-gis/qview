@@ -263,6 +263,64 @@ body {
     border-radius: 2.46032px !important;
     transform: matrix(-1, 0, 0, 1, 0, 0) !important;
 }
+.info-ctrl table {
+    font-family: 'Assistant','Roboto Light', Arial, sans-serif;
+    border: none;
+    width: 91.5%;
+    max-width: 93%;
+    direction: rtl;
+    top: 9%;
+    right: 3%;
+    position: absolute;
+    table-layout: fixed;
+
+}
+.info-ctrl table th {
+    font-family: 'Assistant','Roboto Light', Arial, sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 20px;
+    text-align: right;
+    color: #2A75B5;
+
+    width: 40%;
+    white-space: nowrap;
+
+}
+.info-ctrl table td {
+    font-family: 'Assistant','Roboto Light', Arial, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15.7px;
+    text-align: right;
+    color: #5F5F5F;
+    width: 40%;
+    max-width: 57%;
+
+    overflow-x:auto;
+    /*white-space: nowrap;*/
+    word-break: break-all;
+    overflow-wrap: break-word;
+
+
+}
+
+.info-ctrl table td:nth-child(odd){
+    /*width: 25%;
+    max-width: 40%;
+    white-space: nowrap;*/
+    min-width: 40%;
+    padding-left: 5px;
+}
+.info-ctrl table td:nth-child(even){
+    max-width: 60%;
+
+}
+
+
+
 .mapboxgl-ctrl button.mapboxgl-ctrl-geolocate .mapboxgl-ctrl-icon {
     background-image: url("../icons/locate.svg");
     background-size: 60%;
