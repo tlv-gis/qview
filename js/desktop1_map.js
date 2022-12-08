@@ -9,7 +9,7 @@ const baseUrl = "https://gisn.tel-aviv.gov.il/arcgis/rest/services/IView2/MapSer
 // innerUrl = "https://gisn.tel-aviv.gov.il/arcgis/rest/services/IView2/MapServer/"
 // outerUrl = "https://gisn.tel-aviv.gov.il/arcgis/rest/services/IView2/MapServer/"
 const cityBorderUrl = "https://gisn.tel-aviv.gov.il/arcgis/rest/services/IView2/MapServer/890/query?where=1%3D1&outFields=Shape&geometryPrecision=6&outSR=4326&returnExtentOnly=true&f=geojson"
-let env ={'active_layers':[],'currentHighlightLayer':'','currentInfoLayer':''};
+let env ={'version':0.3,'active_layers':[],'currentHighlightLayer':'','currentInfoLayer':''};
 let baseStyle;
 let QS;
 let map;
