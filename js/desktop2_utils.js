@@ -14,7 +14,8 @@ utils = (function(){
         getStreetLine: getStreetLine,
         getLayerOID: getLayerOID,
         getLayerFeature: getLayerFeature,
-        createLayerObjectFromID: createLayerObjectFromID
+        createLayerObjectFromID: createLayerObjectFromID,
+        esriJsonToGeoJson: esriJsonToGeoJson
     }
 
     // generate unique ID
@@ -167,8 +168,47 @@ utils = (function(){
                 getDataBatch(element)
                 .then(rows => {
                     let features = rows.features;
-                    baseGeoJson.features.push(...features)
-                    updateSource(layer,baseGeoJson)
+                    if(features){
+                        baseGeoJson.features.push(...features)
+                        updateSource(layer,baseGeoJson)
+                    }else{
+                        console.log(`failed querying ${element.url} as GeoJSON`);
+                        getDataBatchAsEsriJson(element)
+                        .then(esriJson => {
+                            let EJFeatures = esriJson.features;
+                            if(EJFeatures){
+                                let gj = esriJsonToGeoJson(esriJson)
+                                let newFeatures = gj.features
+                                baseGeoJson.features.push(...newFeatures)
+                                updateSource(layer,baseGeoJson)
+                                console.log(`success querying ${element.url} as esriJSON`)
+                            }else{
+                                console.log(`failed querying ${element.url} as esriJSON too`)
+                                getDataBatchAllFields(element)
+                                .then(allFieldsJson => {
+                                    let AFFeatures = allFieldsJson.features;
+                                    if(AFFeatures){
+                                        let gj = esriJsonToGeoJson(allFieldsJson)
+                                        let newFeatures = gj.features
+                                        baseGeoJson.features.push(...newFeatures)
+                                        updateSource(layer,baseGeoJson)
+                                        layer['fields'] = ['*']
+                                        delete layer['label_field']
+                                        console.log(`success querying ${element.url} as esriJSON with all fields`)
+                                        console.log(element);
+                                        
+                                    }else{
+                                        console.log(`failed querying ${element.url} as esriJSON and while using all fields`);
+                                        console.log(element);
+                                    }
+                                })
+
+                            }
+                            
+                        })
+                        
+                    }
+                    
                 })
                 
             });
@@ -192,6 +232,35 @@ utils = (function(){
         let data = await res.json();
         return data;
     }
+
+    async function getDataBatchAllFields(element){
+        let url = element["url"];
+        let params = element["params"];
+        params['outFields'] = '*';
+        let form_data = new FormData();
+
+        for ( var key in params) {
+            form_data.append(key, params[key]);
+        }
+        let res = await fetch(url,{ method: "POST", body: form_data });
+        let data = await res.json();
+        return data;
+    }
+
+    async function getDataBatchAsEsriJson(element){
+        let url = element["url"];
+        let params = element["params"];
+        params['f'] = 'json';
+        let form_data = new FormData();
+
+        for ( var key in params) {
+            form_data.append(key, params[key]);
+        }
+        let res = await fetch(url,{ method: "POST", body: form_data });
+        let data = await res.json();
+        return data;
+    }
+    
 
     function updateSource(layer,data){
         let sourceName =  layer['name']+"-source"
@@ -340,6 +409,80 @@ utils = (function(){
         }
         
     }
+
+    /**
+     * Converts an Esri JSON geometry object to a GeoJSON geometry object.
+     *
+     * @param {Object} esriJson - The Esri JSON geometry object to convert.
+     * @return {Object} A GeoJSON FeatureCollection object.
+     */
+    function esriJsonToGeoJson(esriJson) {
+        // Create an empty GeoJSON FeatureCollection
+        const geoJson = {
+            type: 'FeatureCollection',
+            features: []
+        };
+
+        // Loop through each feature in the Esri JSON and convert it to a GeoJSON feature
+        esriJson.features.forEach(feature => {
+            // Convert the Esri JSON geometry to a GeoJSON geometry
+            let geoJsonGeometry;
+            if (feature.geometry.x) {
+                // This is a point geometry
+                geoJsonGeometry = {
+                    type: 'Point',
+                    coordinates: [feature.geometry.x, feature.geometry.y]
+                };
+            } else if (feature.geometry.points) {
+                // This is a multipoint geometry
+                geoJsonGeometry = {
+                    type: 'MultiPoint',
+                    coordinates: feature.geometry.points
+                };
+            } else if (feature.geometry.paths) {
+                if (feature.geometry.paths.length === 1) {
+                    // This is a polyline geometry
+                    geoJsonGeometry = {
+                        type: 'LineString',
+                        coordinates: feature.geometry.paths[0]
+                    };
+                } else {
+                    // This is a multiline geometry
+                    geoJsonGeometry = {
+                        type: 'MultiLineString',
+                        coordinates: feature.geometry.paths
+                    };
+                }
+            } else if (feature.geometry.rings) {
+                if (feature.geometry.rings.length === 1) {
+                    // This is a polygon geometry
+                    geoJsonGeometry = {
+                        type: 'Polygon',
+                        coordinates: feature.geometry.rings
+                    };
+                } else {
+                    // This is a multipolygon geometry
+                    geoJsonGeometry = {
+                        type: 'MultiPolygon',
+                        coordinates: feature.geometry.rings
+                    };
+                }
+            }
+
+            // Create a GeoJSON feature from the original Esri JSON feature and the converted GeoJSON geometry
+            const geoJsonFeature = {
+                type: 'Feature',
+                geometry: geoJsonGeometry,
+                properties: feature.attributes
+            };
+
+            // Add the GeoJSON feature to the GeoJSON FeatureCollection
+            geoJson.features.push(geoJsonFeature);
+        });
+
+        return geoJson;
+    }
+  
 })();
 /**
  * Utility functions

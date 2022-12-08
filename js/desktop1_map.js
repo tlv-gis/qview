@@ -9,7 +9,7 @@ const baseUrl = "https://gisn.tel-aviv.gov.il/arcgis/rest/services/IView2/MapSer
 // innerUrl = "https://gisn.tel-aviv.gov.il/arcgis/rest/services/IView2/MapServer/"
 // outerUrl = "https://gisn.tel-aviv.gov.il/arcgis/rest/services/IView2/MapServer/"
 const cityBorderUrl = "https://gisn.tel-aviv.gov.il/arcgis/rest/services/IView2/MapServer/890/query?where=1%3D1&outFields=Shape&geometryPrecision=6&outSR=4326&returnExtentOnly=true&f=geojson"
-let env ={'active_layers':[]};
+let env ={'active_layers':[],'currentHighlightLayer':'','currentInfoLayer':''};
 let baseStyle;
 let QS;
 let map;
@@ -38,6 +38,7 @@ let locateMeControl = new maplibregl.GeolocateControl({
   },
   trackUserLocation: true
   })
+let infoControl = new InfoControl()
 let changeBounds;
 let tableAdd;
 
@@ -240,6 +241,7 @@ function parseMap(QS,headerProperties={}){
           map.addControl(legendAdd)
           map.addControl(new maplibregl.NavigationControl());
         }else{
+          map.addControl(infoControl,'bottom-right')
           map.addControl(locateMeControl);
           locateMeControl._container.classList.add('locate-container');
         }
@@ -266,7 +268,7 @@ function addButtons(mapJson){
   
   mapHeader.append(buttonSpan)
   if(isMobile){
-    map.addControl(legend,'bottom-right')
+    //map.addControl(legend,'bottom-right')
   }
 
 }
@@ -508,9 +510,17 @@ function addMobileButtons(buttonDefs,mapJson){
                       }
                     })
                 });
+                if(map.getLayer('highlight') && layer["name"] == env.currentHighlightLayer){
+                    map.removeLayer('highlight');
+                    env.currentHighlightLayer = '';
+                }
+                if(!infoControl.container.classList.contains('minimized') && layer["name"] == env.currentInfoLayer){
+                  infoControl.container.classList.add('minimized')
+                }
               }
               
           }
+          LegendBuilder.addLegend()
           LegendBuilder.updateLegend(mapJson)
       })
   }
@@ -548,6 +558,19 @@ function addMapEvents(){
   map.on('sourcedataloading', function(e) {
     
   });
+  map.on('click',function(e){
+    let renderedFeatures = map.queryRenderedFeatures(e.point,{layers: env.active_layers.map(layer => layer.name) })
+    if(renderedFeatures.length < 1){
+      if(!infoControl.container.classList.contains('minimized')){
+        env.currentInfoLayer = '';
+        infoControl.container.classList.add('minimized');
+      }
+    }
+    if(map.getLayer('highlight')){
+        map.removeLayer('highlight');
+        env.currentHighlightLayer = '';
+    }
+  })
 }
 
 function waitForSource(e,layer,_callback){

@@ -19,7 +19,6 @@
       this.container.style.margin = 0;
       let innerHTML = '<div ng-if="\'True\' ==\'True\'" class="ShhunaTitle ng-binding ng-scope" ng-bind-html="\'<b>מפת מרחב</b> הצג לפי:\'"><b>מפת מרחב</b> הצג לפי:</div>'
       
-      console.log(this.title.length)
       if(isMobile){
         //console.log(isMobile)
         /*
@@ -108,6 +107,28 @@ class MapLegend {
     this.container = document.createElement('div');
     this.container.id = "map-legend"
     this.container.className = 'mapboxgl-ctrl mapboxgl-ctrl-group map-legend';
+    this.container.innerHTML = '';
+    this.container.onclick = function(e){
+      e.stopPropagation()
+    }
+    return this.container;
+  }
+  onRemove(){
+    this.container.parentNode.removeChild(this.container);
+    this.map = undefined;
+  }
+}
+
+/**
+ * Container control for map legend
+ * @class
+ */
+ class InfoControl {
+  onAdd(map){
+    this.map = map;
+    this.container = document.createElement('div');
+    this.container.id = "info-control"
+    this.container.className = 'mapboxgl-ctrl mapboxgl-ctrl-group info-ctrl minimized';
     this.container.innerHTML = '';
     this.container.onclick = function(e){
       e.stopPropagation()
