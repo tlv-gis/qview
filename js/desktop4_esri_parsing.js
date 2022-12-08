@@ -1262,7 +1262,8 @@ esriRenderer = (function(){
     function addMobilePopupEvent(layer){
         map.on('click', layer['name'], function (e) {
             popupContent = buildMobilePopup(e,layer)
-
+            addMobileHighlight(e)
+            env.currentInfoLayer = layer['name'];
             infoControl.container.classList.remove('minimized')
             infoControl.container.innerHTML = popupContent
 
@@ -1343,6 +1344,74 @@ esriRenderer = (function(){
             
         
             return popupContent
+    }
+
+    function addMobileHighlight(e){
+        let feature = e.features[0];
+        let layer = feature.layer;
+        if(map.getLayer('highlight')){
+            map.removeLayer('highlight')
+        }
+        let highlightLayer = buildMobileHighlightLayer(feature,layer);
+        map.addLayer(highlightLayer)//,"שמות מקומות") //just under the top layer in basemap
+    }
+
+    function buildMobileHighlightLayer(feature,layer){
+        let layerType = layer.type;
+        if(map.getSource('highlight-source') === undefined){
+            map.addSource('highlight-source', {
+                type: 'geojson',
+                generateId:true,
+                data: fakeSource
+            })
+        }
+        let dataSource = {
+            "type": "FeatureCollection",
+            "features": [feature.toJSON()]
+        };
+        map.getSource('highlight-source').setData(dataSource)
+        env.currentHighlightLayer = layer.id
+        let highlightLayer
+        if(layerType == "symbol"){
+            highlightLayer = {
+                "id": "highlight",
+                "type": "circle",
+                "source": 'highlight-source',
+                "minzoom": 9,
+                "paint": {
+                  "circle-opacity": 0,
+                  "circle-stroke-width": 3,
+                  "circle-stroke-color": "rgba(57, 201, 186, 1)",
+                  "circle-radius": 12
+                }
+              }
+        }else if(layerType = "fill"){
+            highlightLayer = {
+                "id": "highlight",
+                "type": "line",
+                "source": 'highlight-source',
+                "minzoom": 8,
+                "paint": {
+                  "line-color": "rgba(57, 201, 186, 1)"
+                  ,
+                  "line-width": 6
+                }
+              }
+
+        }else if(layerType = "line"){
+            highlightLayer = {
+                "id": "highlight",
+                "type": "line",
+                "source": 'highlight-source',
+                "minzoom": 8,
+                "paint": {
+                  "line-color": "rgba(57, 201, 186, 1)"
+                  ,
+                  "line-width": 6
+                }
+              }
+        }
+        return highlightLayer
     }
 
     /*

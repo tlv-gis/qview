@@ -9,7 +9,7 @@ const baseUrl = "https://gisn.tel-aviv.gov.il/arcgis/rest/services/IView2/MapSer
 // innerUrl = "https://gisn.tel-aviv.gov.il/arcgis/rest/services/IView2/MapServer/"
 // outerUrl = "https://gisn.tel-aviv.gov.il/arcgis/rest/services/IView2/MapServer/"
 const cityBorderUrl = "https://gisn.tel-aviv.gov.il/arcgis/rest/services/IView2/MapServer/890/query?where=1%3D1&outFields=Shape&geometryPrecision=6&outSR=4326&returnExtentOnly=true&f=geojson"
-let env ={'active_layers':[]};
+let env ={'active_layers':[],'currentHighlightLayer':'','currentInfoLayer':''};
 let baseStyle;
 let QS;
 let map;
@@ -510,6 +510,13 @@ function addMobileButtons(buttonDefs,mapJson){
                       }
                     })
                 });
+                if(map.getLayer('highlight') && layer["name"] == env.currentHighlightLayer){
+                    map.removeLayer('highlight');
+                    env.currentHighlightLayer = '';
+                }
+                if(!infoControl.container.classList.contains('minimized') && layer["name"] == env.currentInfoLayer){
+                  infoControl.container.classList.add('minimized')
+                }
               }
               
           }
@@ -555,8 +562,13 @@ function addMapEvents(){
     let renderedFeatures = map.queryRenderedFeatures(e.point,{layers: env.active_layers.map(layer => layer.name) })
     if(renderedFeatures.length < 1){
       if(!infoControl.container.classList.contains('minimized')){
-        infoControl.container.classList.add('minimized')
+        env.currentInfoLayer = '';
+        infoControl.container.classList.add('minimized');
       }
+    }
+    if(map.getLayer('highlight')){
+        map.removeLayer('highlight');
+        env.currentHighlightLayer = '';
     }
   })
 }
