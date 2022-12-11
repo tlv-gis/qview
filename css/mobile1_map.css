@@ -412,9 +412,6 @@ body {
     transition: height 0.3s ease;
 }
 .buttons-nav .drop-down.closed {
-    /*  When toggled via jQuery this class will reduce the height of the ul which inconjuction
-        with overflow: hidden set on the ul will hide all list items apart from the first */
-    /* current li height 38px + 5px border */
     height: 6.7vh;
 }
 .button-nav .drop-down li {
