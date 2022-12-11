@@ -20,24 +20,13 @@
       let innerHTML = '<div ng-if="\'True\' ==\'True\'" class="ShhunaTitle ng-binding ng-scope" ng-bind-html="\'<b>מפת מרחב</b> הצג לפי:\'"><b>מפת מרחב</b> הצג לפי:</div>'
       
       if(isMobile){
-        //console.log(isMobile)
-        /*
-        if(this.title.length > 0){
-          innerHTML = `<div class="ShhunaTitle"><img class="tlv-mobile-logo" src="./icons/logo.jpg">\
-          <div class="ShhunaTitle-text"><div class="ShhunaTitle-text-small">מפות</div>\n<b class="ShhunaTitle-text-large">${this.title}</b></div></div>`;
-         }else{
-          innerHTML =`<div class="ShhunaTitle"><img class="tlv-mobile-logo" src="./icons/logo.jpg">\
-          <div class="ShhunaTitle-text"><b class="ShhunaTitle-text-large">מפות</b></div></div>`;
-         }
-         console.log(isMobile)
-         console.log(innerHTML)*/
          innerHTML =`<div class="ShhunaTitle"><img class="tlv-mobile-logo" src="./icons/logo_new_design.png"></div>`;
       }else{
         if(this.title.length > 0){
-          innerHTML = `<div class="ShhunaTitle"><b>${this.title}</b></div>`;
+          innerHTML =`<div class="ShhunaTitle"><img class="tlv-mobile-logo" src="./icons/logo_new_design.png"></div>`;
          }else{
           if(this.location.length > 0){
-            innerHTML = `<div class="ShhunaTitle"><b>מפת מרחב</b>: ${this.location}</div>`;  
+            innerHTML =`<div class="ShhunaTitle"><img class="tlv-mobile-logo" src="./icons/logo_new_design.png"></div>`;
            }
          }
       }

@@ -239,8 +239,8 @@ function parseMap(QS,headerProperties={}){
         tables = new LayerTable({'layers':env.active_layers});
         map.addControl(mapHeaderControl);
         if(!isMobile){
-          map.addControl(legendAdd)
-          map.addControl(new maplibregl.NavigationControl());
+          /*map.addControl(legendAdd)*/
+          map.addControl(new maplibregl.NavigationControl(),'bottom-left');
         }else{
           map.addControl(infoControl,'bottom-right')
           map.addControl(locateMeControl);
@@ -260,12 +260,12 @@ function addButtons(mapJson){
   var mapHeader = document.getElementsByClassName('map-header')[0];
   let buttonDefs = mapJson['buttons']
   let buttonSpan
-  if(isMobile){
+  //if(isMobile){
     buttonSpan = addMobileButtons(buttonDefs,mapJson)
-  }else{
+  /*}else{
     map.addControl(new FillerControl({'height':mapHeaderControl.container.offsetHeight-10}),'top-right')
     buttonSpan = addDesktopButtons(buttonDefs,mapJson)
-  }
+  }*/
   
   mapHeader.append(buttonSpan)
   if(isMobile){

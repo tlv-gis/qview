@@ -40,7 +40,7 @@ body {
 }
 */
 .map-header {
-    height: 15%;
+    height: 0;
     background: rgb(255, 242, 227);
     width: 98vw;
     direction: rtl;
@@ -48,9 +48,9 @@ body {
     bottom: 0; 
     z-index: 4;
     margin: 0;
-    padding: 5px;
-    padding-bottom: 30px;
-    padding-top: 10px;
+    padding: 0;
+    padding-bottom: 0;
+    padding-top: 0;
 }
 .map-legend-button{
     background-color: #fff;
@@ -91,43 +91,152 @@ body {
 
 .buttons-span {
     margin-bottom: 5px;
-    margin-right: 2%;
+    margin-right: 0.5%;
     line-height: 15px;
-    width: 90%;
+    width: 97.5%;
     display: block;
 }
 
 .button-span {
-    padding-bottom: 10px;
-    margin-left: 15px;
+    padding-bottom: 0.02vh;
+    margin-left: 0.1vw;
 }
+.buttons-nav {
+    
+    position: absolute;
+    width: 6vw;
+    height: 10.1vh;
+    float: right;
+    margin-right: calc(12.6vw + 3%);
+    margin-top: 2.2vh;
+    box-sizing: border-box;
+    background: #FFFFFF;
+    box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.25);
+
+}
+.button-nav {
+    /*margin-top: 21px; */
+    
+    position: relative;
+    width: 6vw;
+    height: 10.1vh;
+    left: 0;
+    top: 0;
+    background-color: #fff;
+    box-shadow: 0px 1.96825px 8.36508px rgba(24, 44, 63, 0.06);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    
+
+}
+.layers-nav-icon {
+    
+    position: relative;
+    width: 56.5%;
+    height: 41.7%;
+    margin-left: auto;
+    margin-right: auto;
+    top: 1.0921vh;
+}
+.layers-nav-text{
+    position: absolute;
+    /*width: 29px;
+    height: 14px;
+    left: 20%;*/
+    top: 66%;
+    font-family: 'Assistant';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 26px;
+    text-align: right;
+    margin-left: auto;
+    margin-right: auto;
+}
+.buttons-nav .drop-down {
+    width: 6vw;
+    position: absolute;
+    height: 80vh;
+    left: 0;
+    top: 0;
+    list-style: none; 
+    overflow: hidden; /* When ul height is reduced, ensure overflowing li are not shown */
+     /* 172px = (38 (li) + 5 (li border)) * 4 (number of li) */
+    margin: 0 auto;
+    padding: 0;
+    text-align: center;
+    -webkit-transition: height 0.3s ease;
+    transition: height 0.3s ease;
+}
+.buttons-nav .drop-down.closed {
+    height: 10.1vh;
+}
+.button-nav .drop-down li {
+    border-bottom: 5px solid #2c3e50;
+}
+  
+.button-nav .drop-down li {
+    display: block;
+    color: #ecf0f1;
+    text-decoration: none;
+    padding: 10px; /* Larger touch target area */
+}
+  
+nav .drop-down li:first-child button:after {
+    
+    color: rgba(0, 0, 0, 0);
+    float: left;
+    margin-left: -30px; /* Excessive -margin to bring link text back to center */
+    margin-right: 5px;
+}
+
 .icon {
     /*margin-left: 10px;*/
     border: none;
-    display: inline-block;
-    vertical-align: middle;
-    height: 24px;
-    width: 24px;
-    text-align: center;
+    /*display: inline-block;*/
+    display: block;
+    height: calc(0.417 * 6.7vh);
+    width: calc(0.517 * 16vw);
+    
     font-size: 21px;
     color: #2b393f;
     background-color: transparent;
+    margin-top: 3%;
+    margin-left: auto;
+    margin-right: auto;
+
 }
 .button {
-    background-color: #f3f3f3; 
+    background-color: #ffffff; 
+    font-family: 'Assistant';
     color: black;
-    padding: 7px 16px;
-    text-align: center;
+    padding: 0;
+    text-align: justify;
+    text-justify: inter-word;
     text-decoration: none;
     display: inline-block;
-    font-size: 14px;
-    height: 46px;
-    border-radius: 3px;
+    
+    
+    border: none;
+    border-radius: 0px;
     margin-top: 5px;
+    margin-left: 1vw;
+    width: 6vw;
+    height: 10.1vh;
+    font-size: 11px;
+    overflow-y: hidden;
 }
 .button > span{
-    margin-left:auto;
+    font-family: 'Assistant';
+    line-height: 10px;
+    font-size: 11px;
+    width: 95%;
+    position: relative;
+    margin-top: 3px;
+    text-align: center;
     color: black;
+    padding-right: 2.5%;
 }
 .button:hover{
     background-color: rgb(48, 48, 48); 
@@ -140,6 +249,54 @@ body {
 }
 .button:hover > img{
     filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(186deg) brightness(118%) contrast(119%);
+}
+.mapboxgl-ctrl .button:not(:disabled):hover{
+    background-color: rgb(48, 48, 48); 
+    color: white;
+}
+
+.button-on {
+    background-color: #00b0f0; 
+    font-family: 'Assistant';
+    color: white;
+    padding: 0;
+    text-align: justify;
+    text-justify: inter-word;
+    text-decoration: none;
+    display: inline-block;
+    
+    
+    border: none;
+    border-radius: 0px;
+    margin-top: 5px;
+    margin-left: 1vw;
+    width: 16vw;
+    height: 6.7vh;
+    font-size: 11px;
+    
+}
+.button-on > span{
+    font-family: 'Assistant';
+    font-size: 11px;
+    width: 95%;
+    position: relative;
+    margin-top: 3px;
+    text-align: center;
+    color: white;
+}
+.button-on > img{
+    filter: contrast(75%);
+}
+.button-on:hover {
+    background-color: #f3f3f3; 
+    color: black;
+}
+.button-on:hover > span{
+    
+    color: black;
+}
+.button-on:hover > img{
+    filter: contrast(75%);
 }
 .mapboxgl-ctrl .button:not(:disabled):hover{
     background-color: rgb(48, 48, 48); 
@@ -230,19 +387,25 @@ body {
 }
 .ShhunaTitle {
     /*font-family: 'blenderRegular';*/
+    background-color: white;
     font-size: 18px;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
     line-height: 1.11;
     letter-spacing: normal;
     text-align: right;
     color: #2b393f;
-    display: block;
+    display: inline-block;
     /*vertical-align: middle;*/
-    padding: 0 25px 0 5px;
+    padding: 0 5px 0 5px;
     margin-bottom: 5px;
     white-space: nowrap;
+
+    width: 12.6vw;
+    height: 10.1vh;
+    border-radius: 3px;
+    margin-top: 2.2vh;
+    right: 1.5%;
+    position: fixed;
+    box-shadow: 0px 4px 17px rgba(24, 44, 63, 0.06);
 }
 .tlv-mobile-logo{
     width: 63.7%;
