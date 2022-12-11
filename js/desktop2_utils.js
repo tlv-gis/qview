@@ -13,7 +13,9 @@ utils = (function(){
         getAddressPoint: getAddressPoint,
         getStreetLine: getStreetLine,
         getLayerOID: getLayerOID,
-        getLayerFeature: getLayerFeature
+        getLayerFeature: getLayerFeature,
+        createLayerObjectFromID: createLayerObjectFromID,
+        esriJsonToGeoJson: esriJsonToGeoJson
     }
 
     // generate unique ID
@@ -64,7 +66,7 @@ utils = (function(){
         var params = {
             where:'1=1',
             returnGeometry:true,
-            geometryPrecision:6,
+            geometryPrecision:7,
             outSR:4326,
             f:'json',
             returnIdsOnly:true,
@@ -94,7 +96,7 @@ utils = (function(){
         
 
         url = baseUrl+layer["id"]
-        url += "/query?where=1%3D1&returnGeometry=true&geometryPrecision=6&outSR=4326&f=geojson"
+        url += "/query?where=1%3D1&returnGeometry=true&geometryPrecision=7&outSR=4326&f=geojson"
         url += "&inSR=4326&geometryType=esriGeometryEnvelope&geometry="+turf.bbox(turf.buffer(current_bounds,100,{units: 'meters'}))
 
         
@@ -146,7 +148,7 @@ utils = (function(){
                 var params = {
                     where:'1=1',
                     returnGeometry:true,
-                    geometryPrecision:6,
+                    geometryPrecision:7,
                     outSR:4326,
                     f:'geojson',
                     objectIds: ids.join()
@@ -166,8 +168,47 @@ utils = (function(){
                 getDataBatch(element)
                 .then(rows => {
                     let features = rows.features;
-                    baseGeoJson.features.push(...features)
-                    updateSource(layer,baseGeoJson)
+                    if(features){
+                        baseGeoJson.features.push(...features)
+                        updateSource(layer,baseGeoJson)
+                    }else{
+                        console.log(`failed querying ${element.url} as GeoJSON`);
+                        getDataBatchAsEsriJson(element)
+                        .then(esriJson => {
+                            let EJFeatures = esriJson.features;
+                            if(EJFeatures){
+                                let gj = esriJsonToGeoJson(esriJson)
+                                let newFeatures = gj.features
+                                baseGeoJson.features.push(...newFeatures)
+                                updateSource(layer,baseGeoJson)
+                                console.log(`success querying ${element.url} as esriJSON`)
+                            }else{
+                                console.log(`failed querying ${element.url} as esriJSON too`)
+                                getDataBatchAllFields(element)
+                                .then(allFieldsJson => {
+                                    let AFFeatures = allFieldsJson.features;
+                                    if(AFFeatures){
+                                        let gj = esriJsonToGeoJson(allFieldsJson)
+                                        let newFeatures = gj.features
+                                        baseGeoJson.features.push(...newFeatures)
+                                        updateSource(layer,baseGeoJson)
+                                        layer['fields'] = ['*']
+                                        delete layer['label_field']
+                                        console.log(`success querying ${element.url} as esriJSON with all fields`)
+                                        console.log(element);
+                                        
+                                    }else{
+                                        console.log(`failed querying ${element.url} as esriJSON and while using all fields`);
+                                        console.log(element);
+                                    }
+                                })
+
+                            }
+                            
+                        })
+                        
+                    }
+                    
                 })
                 
             });
@@ -191,6 +232,35 @@ utils = (function(){
         let data = await res.json();
         return data;
     }
+
+    async function getDataBatchAllFields(element){
+        let url = element["url"];
+        let params = element["params"];
+        params['outFields'] = '*';
+        let form_data = new FormData();
+
+        for ( var key in params) {
+            form_data.append(key, params[key]);
+        }
+        let res = await fetch(url,{ method: "POST", body: form_data });
+        let data = await res.json();
+        return data;
+    }
+
+    async function getDataBatchAsEsriJson(element){
+        let url = element["url"];
+        let params = element["params"];
+        params['f'] = 'json';
+        let form_data = new FormData();
+
+        for ( var key in params) {
+            form_data.append(key, params[key]);
+        }
+        let res = await fetch(url,{ method: "POST", body: form_data });
+        let data = await res.json();
+        return data;
+    }
+    
 
     function updateSource(layer,data){
         let sourceName =  layer['name']+"-source"
@@ -248,15 +318,15 @@ utils = (function(){
         return buffered
     }
 
-    async function getAddressPoint(k_rechov,ms_bayit){
-        let url = `https://gisn.tel-aviv.gov.il/arcgis/rest/services/IView2/MapServer/527/query?where=k_rechov=${k_rechov}+AND+ms_bayit=${ms_bayit}&outFields=*&returnGeometry=true&geometryPrecision=7&outSR=4326&returnExtentOnly=false&f=geojson`
+    async function getAddressPoint(k_rechov,ms_bayit,service=addressServiceUrl){
+        let url = `${service}/query?where=k_rechov=${k_rechov}+AND+ms_bayit=${ms_bayit}&outFields=*&returnGeometry=true&geometryPrecision=7&outSR=4326&returnExtentOnly=false&f=geojson`
         let response = await fetch(url)
         let data = await response.json()
         return data;
     }
 
-    async function getStreetLine(k_rechov){
-        let url = `https://gisn.tel-aviv.gov.il/arcgis/rest/services/IView2/MapServer/527/query?where=k_rechov=${k_rechov}&returnGeometry=true&outSR=4326&returnExtentOnly=true&f=geojson`
+    async function getStreetLine(k_rechov,service=addressServiceUrl){
+        let url = `${service}/query?where=k_rechov=${k_rechov}&returnGeometry=true&outSR=4326&returnExtentOnly=true&f=geojson`
         let response = await fetch(url)
         let data = await response.json()
         let polygon = await turf.bboxPolygon(data.extent.bbox)
@@ -265,8 +335,8 @@ utils = (function(){
         
     }
 
-    async function getLayerOID(layer_id,service="https://gisn.tel-aviv.gov.il/arcgis/rest/services/IView2/MapServer"){
-        let url = service+'/'+ layer_id+'?f=json'
+    async function getLayerOID(layer_id,service=baseUrl){
+        let url = service+ layer_id+'?f=json'
         let response = await fetch(url)
         let data = await response.json()
         let fieldName = await data.fields[data.fields.findIndex(x => x.type === "esriFieldTypeOID")].name
@@ -303,6 +373,116 @@ utils = (function(){
             
 
     }
+
+    async function getFieldsFromMetadata(data){
+        let fields = {}
+        if(data.fields && data.fields.length > 0){
+            for(var i =0;i< data["fields"].length;i++){
+                fieldName = data["fields"][i]["name"]
+                fields[fieldName] = data["fields"][i]
+            }
+        }
+        return fields;
+    }
+
+    async function createLayerObjectFromID(id,service=baseUrl,config=mapJson){
+        try {
+            let layer = {
+                "id": id,
+                "name":`indie-layer-${id}`,
+                "fields":["*"],
+                "indie":true
+            }
+            let url = service+ id+'?f=json';
+            let response = await fetch(url);
+            let data = await response.json();   
+            layer.name_heb = await data.name;
+            layer.renderer = await data.drawingInfo.renderer;
+            layer.geomType = await data.geometryType
+            layer.metadata = await getFieldsFromMetadata(data);
+            await config.layers.push(layer)
+            await console.log(layer)
+            await esriRenderer.renderIndieLayer(layer)
+            return layer
+        } catch (error) {
+            
+        }
+        
+    }
+
+    /**
+     * Converts an Esri JSON geometry object to a GeoJSON geometry object.
+     *
+     * @param {Object} esriJson - The Esri JSON geometry object to convert.
+     * @return {Object} A GeoJSON FeatureCollection object.
+     */
+    function esriJsonToGeoJson(esriJson) {
+        // Create an empty GeoJSON FeatureCollection
+        const geoJson = {
+            type: 'FeatureCollection',
+            features: []
+        };
+
+        // Loop through each feature in the Esri JSON and convert it to a GeoJSON feature
+        esriJson.features.forEach(feature => {
+            // Convert the Esri JSON geometry to a GeoJSON geometry
+            let geoJsonGeometry;
+            if (feature.geometry.x) {
+                // This is a point geometry
+                geoJsonGeometry = {
+                    type: 'Point',
+                    coordinates: [feature.geometry.x, feature.geometry.y]
+                };
+            } else if (feature.geometry.points) {
+                // This is a multipoint geometry
+                geoJsonGeometry = {
+                    type: 'MultiPoint',
+                    coordinates: feature.geometry.points
+                };
+            } else if (feature.geometry.paths) {
+                if (feature.geometry.paths.length === 1) {
+                    // This is a polyline geometry
+                    geoJsonGeometry = {
+                        type: 'LineString',
+                        coordinates: feature.geometry.paths[0]
+                    };
+                } else {
+                    // This is a multiline geometry
+                    geoJsonGeometry = {
+                        type: 'MultiLineString',
+                        coordinates: feature.geometry.paths
+                    };
+                }
+            } else if (feature.geometry.rings) {
+                if (feature.geometry.rings.length === 1) {
+                    // This is a polygon geometry
+                    geoJsonGeometry = {
+                        type: 'Polygon',
+                        coordinates: feature.geometry.rings
+                    };
+                } else {
+                    // This is a multipolygon geometry
+                    geoJsonGeometry = {
+                        type: 'MultiPolygon',
+                        coordinates: feature.geometry.rings
+                    };
+                }
+            }
+
+            // Create a GeoJSON feature from the original Esri JSON feature and the converted GeoJSON geometry
+            const geoJsonFeature = {
+                type: 'Feature',
+                geometry: geoJsonGeometry,
+                properties: feature.attributes
+            };
+
+            // Add the GeoJSON feature to the GeoJSON FeatureCollection
+            geoJson.features.push(geoJsonFeature);
+        });
+
+        return geoJson;
+    }
+  
 })();
 /**
  * Utility functions
@@ -439,4 +619,14 @@ utils = (function(){
  * @param {Integer} [feature_id=1] - The ID of the feature to extract
  * @param {String} [where=""] Where clause for the query rest API
  * @return {GeoJson}
+ */
+/**
+ * create a [mapJson-layer]{@link mapJson-layer} object from a service and a layer ID.\n
+ * The layer ibject is created using metadata extracted from the service.
+ * Returns a GeoJson of 
+ * @function
+ * @name createLayerObjectFromID
+ * @param {Integer} layer_id - layer ID in the map/feature service
+ * @param {String} [service=baseUrl] - The service from which to extract features
+ * @return {mapJson-layer}
  */

@@ -1,3 +1,11 @@
+@font-face {
+    font-family: 'Aharoni';
+    src: url('./Aharoni_CLM_Book.ttf');
+  }
+@font-face {
+    font-family: 'Assistant';
+    src: url('./Assistant-VariableFont_wght.ttf');
+}
 body {
     color: #444;
     font-size: 13px;
@@ -5,7 +13,7 @@ body {
     direction: rtl;
     margin: 0; 
     padding: 0; 
-    font-family: "Segoe UI",Tahoma,Arial,sans-serif;
+    font-family: 'Assistant','Roboto Light', Arial, sans-serif;
 }
 .map-container {
     width: 98%;
@@ -14,6 +22,9 @@ body {
     left: 1%;/* DELETE LATER*/
     height: 98%;
     
+}
+.filler-ctrl{
+    background-color: rgba(255, 255, 255, 0);
 }
 /*
 .gis-header {
@@ -115,7 +126,7 @@ body {
     margin-top: 5px;
 }
 .button > span{
-    margin-left:3px;
+    margin-left:auto;
     color: black;
 }
 .button:hover{
@@ -124,7 +135,7 @@ body {
     
 }
 .button:hover > span{
-    margin-left:3px;
+    
     color: white;
 }
 .button:hover > img{
@@ -171,7 +182,7 @@ body {
 .button-text {
     display: inline-block;
     vertical-align: middle;
-    font-family: 'BlenderBold';
+    /*font-family: 'BlenderBold';*/
     font-size: 12px;
     font-weight: bold;
     font-stretch: normal;
@@ -218,7 +229,7 @@ body {
     float: right;
 }
 .ShhunaTitle {
-    font-family: 'blenderRegular';
+    /*font-family: 'blenderRegular';*/
     font-size: 18px;
     font-weight: normal;
     font-stretch: normal;
@@ -232,6 +243,13 @@ body {
     padding: 0 25px 0 5px;
     margin-bottom: 5px;
     white-space: nowrap;
+}
+.tlv-mobile-logo{
+    width: 63.7%;
+    height: 63%;
+    padding-top: 9.15%;
+    padding-right: 9%;
+    float: right;
 }
 .gis-icons {
     text-align: right;
@@ -262,7 +280,7 @@ body {
     max-height: 40vh;
 }
 .popup-table {
-    font-family: Arial, Helvetica, sans-serif;
+    /*font-family: Arial, Helvetica, sans-serif;*/
     border-collapse: collapse;
     width: 100%;
   }
@@ -332,6 +350,10 @@ body {
         height: 38px;
         line-height: 42px;
     }
+    .icon{
+        margin-right:3px;
+        
+    }
     
 }
 
@@ -346,17 +368,4 @@ body {
         background-position: left top;
         /*top: 70px;*/
     }
-}
-
-@media (min-width: 768px){
-    /*
-    .gis-header {
-        height: 80px;
-    }
-    */
-    /*
-    .gis-map {
-        top: 80px;
-    }
-    */
 }

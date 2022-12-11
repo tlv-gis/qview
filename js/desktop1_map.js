@@ -4,12 +4,12 @@ maplibregl.setRTLTextPlugin(
   null,
   true // Lazy load the plugin
   );
-
+const isMobile = window.matchMedia("only screen and (max-width: 600px)").matches;
 const baseUrl = "https://gisn.tel-aviv.gov.il/arcgis/rest/services/IView2/MapServer/"
 // innerUrl = "https://gisn.tel-aviv.gov.il/arcgis/rest/services/IView2/MapServer/"
 // outerUrl = "https://gisn.tel-aviv.gov.il/arcgis/rest/services/IView2/MapServer/"
 const cityBorderUrl = "https://gisn.tel-aviv.gov.il/arcgis/rest/services/IView2/MapServer/890/query?where=1%3D1&outFields=Shape&geometryPrecision=6&outSR=4326&returnExtentOnly=true&f=geojson"
-let env ={'active_layers':[]};
+let env ={'version':0.3,'active_layers':[],'currentHighlightLayer':'','currentInfoLayer':''};
 let baseStyle;
 let QS;
 let map;
@@ -31,7 +31,14 @@ let topPadding;
 let jsonUrl;
 let buttonDefs;
 let legendAdd;
-let legend = new MapLegend();;
+let legend = new MapLegend();
+let locateMeControl = new maplibregl.GeolocateControl({
+  positionOptions: {
+  enableHighAccuracy: true
+  },
+  trackUserLocation: true
+  })
+let infoControl = new InfoControl()
 let changeBounds;
 let tableAdd;
 
@@ -224,16 +231,22 @@ function parseMap(QS,headerProperties={}){
         let addTable = false;
         mapJson.layers.forEach(element => {
           if("table" in element){
-            addTable = true;
+            //addTable = true;
           }
         });
         //tables = new LayerTable({'layers':mapJson.layers});
         tables = new LayerTable({'layers':env.active_layers});
         map.addControl(mapHeaderControl);
-        map.addControl(new maplibregl.NavigationControl());
-        map.addControl(legendAdd)
+        if(!isMobile){
+          map.addControl(legendAdd)
+          map.addControl(new maplibregl.NavigationControl());
+        }else{
+          map.addControl(infoControl,'bottom-right')
+          map.addControl(locateMeControl);
+          locateMeControl._container.classList.add('locate-container');
+        }
         if(addTable){
-          map.addControl(tableAdd)
+          //map.addControl(tableAdd)
         }
         addButtons(mapJson)
     })
@@ -244,10 +257,25 @@ function parseMap(QS,headerProperties={}){
 function addButtons(mapJson){
   
   var mapHeader = document.getElementsByClassName('map-header')[0];
-  var buttonSpan = document.createElement('span');
+  let buttonDefs = mapJson['buttons']
+  let buttonSpan
+  if(isMobile){
+    buttonSpan = addMobileButtons(buttonDefs,mapJson)
+  }else{
+    map.addControl(new FillerControl({'height':mapHeaderControl.container.offsetHeight-10}),'top-right')
+    buttonSpan = addDesktopButtons(buttonDefs,mapJson)
+  }
+  
+  mapHeader.append(buttonSpan)
+  if(isMobile){
+    //map.addControl(legend,'bottom-right')
+  }
+
+}
+function addDesktopButtons(buttonDefs,mapJson){
+  let buttonSpan = document.createElement('span');
   buttonSpan.classList.add('buttons-span')
 
-  buttonDefs = mapJson['buttons']
   for(var i=0;i<buttonDefs.length;i++){
       
       var buttonID = 'button-'+i
@@ -359,9 +387,157 @@ function addButtons(mapJson){
       newSpan.append(newButton)
       buttonSpan.append(newSpan)
   }
-  mapHeader.append(buttonSpan)
-  map.addControl(new FillerControl({'height':mapHeaderControl.container.offsetHeight-10}),'top-left')
+  return buttonSpan;
 
+}
+function addMobileButtons(buttonDefs,mapJson){
+  let buttonsNav = document.createElement('nav');
+  buttonsNav.classList.add('buttons-nav')
+  
+
+  let buttonUL = document.createElement('ul');
+  buttonUL.classList.add('buttons-span')
+  buttonUL.classList.add('drop-down','closed')
+
+  let buttonNav = document.createElement('li');
+  buttonNav.classList.add('button-nav');
+  buttonNav.onclick = function() {
+
+      this.parentNode.classList.toggle('closed')
+  
+  }
+  let layersNavIcon = document.createElement('img');
+  layersNavIcon.src = './icons/layers_closed_centered.svg';
+  layersNavIcon.classList.add('layers-nav-icon');
+  buttonNav.append(layersNavIcon);
+  let layersNavText = document.createElement('b');
+  layersNavText.innerText = 'שכבות';
+  layersNavText.classList.add('layers-nav-text');
+  buttonNav.append(layersNavText);
+
+  buttonUL.append(buttonNav)
+  for(let i=0;i<buttonDefs.length;i++){
+    let buttonID = 'button-'+i
+    mapJson['buttons'][i]['id'] = buttonID
+    let currentButtonDef = buttonDefs[i]
+    let layerIDs = currentButtonDef['layers']
+    addButtonLayer(layerIDs)
+
+    let newLI = document.createElement('li');
+    let newButton = document.createElement('button');
+    let newButtonIcon = document.createElement('img');
+    let newButtonText = document.createElement('span');
+
+    newButton.classList.add('button')
+    newButton.classList.add('mobile-button-closed')
+    newButton.id = buttonID
+    newButton.classList.add('button-span');
+    newButton.type = "button";
+    newButton.value = 0;
+    newButton.onclick = function(){
+      currentButtonDef = mapJson["buttons"].filter(obj => {
+          return obj.id === this.id
+        })[0]
+      layerIDs = currentButtonDef['layers']
+      addButtonLayer(layerIDs,()=>{
+          if(this.value === "0"){
+            this.value = "1"
+            this.className = "button-on"
+              for(let layerI in layerIDs){
+                  let layerID = layerIDs[layerI]
+                  let layer = mapJson["layers"].filter(obj => {
+                      return obj.id === layerID
+                    })[0]
+                  env.active_layers.push(layer)
+                  map.setLayoutProperty(layer["name"],'visibility','visible')  
+                  let strokeLayerName = layer['name']+'-stroke'
+                  let labelLayerName = layer['name']+'-labels'
+                  if(neighborhood_url){}else{
+                    let sourceName =  layer['name']+"-source"
+                    
+                    current_bounds = utils.updateCurrentBounds(map)
+                    currentLayerUrl = utils.getLayerUrl(layer)
+                    map.getSource(sourceName).setData(currentLayerUrl)
+                  }
+                  if(map.getLayer(strokeLayerName) !== undefined){
+                    map.setLayoutProperty(strokeLayerName,'visibility','visible')  
+                  }  
+                  if(map.getLayer(labelLayerName) !== undefined){
+                    map.setLayoutProperty(labelLayerName,'visibility','visible')  
+                  }
+                  if(layer["type"] && layer["type"] === "raster"){
+                    sourceName = layer['name']+'-source'
+                    esriRenderer.updateRaster(sourceName)
+                    
+                  }
+                  map.once('sourcedataloading', function(e) {
+                      waitForSource(e,layer,function(){
+                        if(map.hasControl(tables)){
+                          map.removeControl(tables)
+                          tables = new LayerTable({'layers':env.active_layers});
+                          map.addControl(tables)
+                        }
+                      })
+                  });
+              }
+              
+          }else{
+            this.value = "0"
+            this.className = "button"
+              for(layerI in layerIDs){
+                  layerID = layerIDs[layerI]
+                  layer = mapJson["layers"].filter(obj => {
+                      return obj.id === layerID
+                    })[0]
+                  env.active_layers = env.active_layers.filter(function( obj ) {
+                      return obj.id !== layerID;
+                  });
+                  map.setLayoutProperty(layer["name"],'visibility','none')  
+                  strokeLayerName = layer['name']+'-stroke'
+                  labelLayerName = layer['name']+'-labels'
+                  if(map.getLayer(strokeLayerName) !== undefined){
+                    map.setLayoutProperty(strokeLayerName,'visibility','none')  
+                  }  
+                  if(map.getLayer(labelLayerName) !== undefined){
+                    map.setLayoutProperty(labelLayerName,'visibility','none')  
+                  }  
+                  map.once('sourcedataloading', function(e) {
+                    waitForSource(e,layer,function(){
+                      if(map.hasControl(tables)){
+                        map.removeControl(tables)
+                        tables = new LayerTable({'layers':env.active_layers});
+                        map.addControl(tables)
+                      }
+                    })
+                });
+                if(map.getLayer('highlight') && layer["name"] == env.currentHighlightLayer){
+                    map.removeLayer('highlight');
+                    env.currentHighlightLayer = '';
+                }
+                if(!infoControl.container.classList.contains('minimized') && layer["name"] == env.currentInfoLayer){
+                  infoControl.container.classList.add('minimized')
+                }
+              }
+              
+          }
+          LegendBuilder.addLegend()
+          LegendBuilder.updateLegend(mapJson)
+      })
+  }
+    let b = document.createElement('b')
+    b.innerText = currentButtonDef['label']+" "
+    newButtonIcon.src = currentButtonDef['icon']
+    newButtonIcon.classList.add('icon')
+    newButtonText.innerText = currentButtonDef['label']
+    newButtonText.classList.add('button-text')
+    newButton.append(newButtonIcon,newButtonText)
+    //newSpan.append(newButton)
+    newLI.append(newButton)
+    buttonUL.append(newLI)
+
+  }
+  buttonsNav.append(buttonUL)
+  return buttonsNav;
 }
 function addButtonLayer(layerIDs,_callback){
   
@@ -382,6 +558,19 @@ function addMapEvents(){
   map.on('sourcedataloading', function(e) {
     
   });
+  map.on('click',function(e){
+    let renderedFeatures = map.queryRenderedFeatures(e.point,{layers: env.active_layers.map(layer => layer.name) })
+    if(renderedFeatures.length < 1){
+      if(!infoControl.container.classList.contains('minimized')){
+        env.currentInfoLayer = '';
+        infoControl.container.classList.add('minimized');
+      }
+    }
+    if(map.getLayer('highlight')){
+        map.removeLayer('highlight');
+        env.currentHighlightLayer = '';
+    }
+  })
 }
 
 function waitForSource(e,layer,_callback){

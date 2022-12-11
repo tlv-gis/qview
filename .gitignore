@@ -3,3 +3,6 @@ js/maplibre_esri.js
 out/*
 out/*/*
 web.config
+new_icons/*
+new_icons/*/*
+*.pdf

@@ -248,8 +248,11 @@ esriRenderer = (function(){
                             if(map.getLayer(layer['name']) === undefined){
                                 map.addLayer(layerJson);
                                 addHighlightLayer(layer)
-        
-                                addPopupEvent(layer)
+                                if(isMobile){
+                                    addMobilePopupEvent(layer)
+                                }else{
+                                    addPopupEvent(layer)
+                                }
                                     
                                 addMapHoverEvents(layer)
 
@@ -272,7 +275,11 @@ esriRenderer = (function(){
                                 map.addLayer(layerJson);
                                 addHighlightLayer(layer)
         
-                                addPopupEvent(layer)
+                                if(isMobile){
+                                    addMobilePopupEvent(layer)
+                                }else{
+                                    addPopupEvent(layer)
+                                }
                                     
                                 addMapHoverEvents(layer)
 
@@ -332,7 +339,11 @@ esriRenderer = (function(){
                         map.addLayer(layerJson);
                         addHighlightLayer(layer)
 
-                        addPopupEvent(layer)
+                        if(isMobile){
+                            addMobilePopupEvent(layer)
+                        }else{
+                            addPopupEvent(layer)
+                        }
                             
                         addMapHoverEvents(layer)
 
@@ -359,6 +370,7 @@ esriRenderer = (function(){
                 var sourceName =  layer['name']+"-source";
                 var layerUrl = utils.getLayerUrl(layer);
                 var fillColor = "rgb("+renderer.symbol.color.slice(0,3).join()+")";
+                var legendColor = "rgba("+renderer.symbol.color.slice(0,3).join()+","+layer["opacity"] ? layer["opacity"] : utils.parseOpacity(renderer.symbol.color[3])+")";
                 var fillOpacity = layer["opacity"] ? layer["opacity"] : utils.parseOpacity(renderer.symbol.color[3]);
                 var strokeLayerName = layer['name']+'-stroke'
                 var labelLayerName = layer['name']+'-labels'
@@ -369,7 +381,8 @@ esriRenderer = (function(){
                     {   
                         "value":"default",
                         "fillColor":fillColor,
-                        "fillOpacity":fillOpacity
+                        "fillOpacity":fillOpacity,
+                        "legendColor":legendColor
                     }
                 ]
                 if(renderer.symbol.outline.width > 0.1 || renderer.symbol.outline.color[3] < 1){
@@ -427,7 +440,11 @@ esriRenderer = (function(){
                         map.addLayer(layerJson);
                         addHighlightLayer(layer)
 
-                        addPopupEvent(layer)
+                        if(isMobile){
+                            addMobilePopupEvent(layer)
+                        }else{
+                            addPopupEvent(layer)
+                        }
                             
                         addMapHoverEvents(layer)
 
@@ -640,7 +657,11 @@ esriRenderer = (function(){
                 map.addLayer(layerJson);
                 addHighlightLayer(layer)
 
-                addPopupEvent(layer)
+                if(isMobile){
+                    addMobilePopupEvent(layer)
+                }else{
+                    addPopupEvent(layer)
+                }
                     
                 addMapHoverEvents(layer)
 
@@ -740,7 +761,11 @@ esriRenderer = (function(){
                 map.addLayer(layerJson);
                 addHighlightLayer(layer)
 
-                addPopupEvent(layer)
+                if(isMobile){
+                    addMobilePopupEvent(layer)
+                }else{
+                    addPopupEvent(layer)
+                }
                     
                 addMapHoverEvents(layer)
 
@@ -863,7 +888,11 @@ esriRenderer = (function(){
                 map.addLayer(layerJson);
                 addHighlightLayer(layer)
 
-                addPopupEvent(layer)
+                if(isMobile){
+                    addMobilePopupEvent(layer)
+                }else{
+                    addPopupEvent(layer)
+                }
                     
                 addMapHoverEvents(layer)
                 if(drawOutline && map.getLayer(strokeLayerName) === undefined){
@@ -1220,8 +1249,31 @@ esriRenderer = (function(){
     function addPopupEvent(layer){
 
         map.on('click', layer['name'], function (e) {
+
+            popupContent = buildDesktopPopup(e,layer)
             
-            popupContent = '<p dir="rtl">'
+            popup.setHTML(popupContent)
+            popup.setLngLat(e.lngLat)
+            popup.addTo(map)
+        });
+
+    }
+
+    function addMobilePopupEvent(layer){
+        map.on('click', layer['name'], function (e) {
+            popupContent = buildMobilePopup(e,layer)
+            addMobileHighlight(e)
+            env.currentInfoLayer = layer['name'];
+            infoControl.container.classList.remove('minimized')
+            infoControl.container.innerHTML = popupContent
+
+        })
+    }
+
+
+    function buildDesktopPopup(e,layer){
+
+        popupContent = '<p dir="rtl">'
             feature = e.features[0]
             if('label_field' in layer){
                 popupContent += '<table class="popup-table">'
@@ -1253,11 +1305,113 @@ esriRenderer = (function(){
                 popupContent += "</table>"
             }
             popupContent += "</p>"
-            popup.setHTML(popupContent)
-            popup.setLngLat(e.lngLat)
-            popup.addTo(map)
-        });
+        
+            return popupContent
+    }
 
+    function buildMobilePopup(e,layer){
+        popupContent = ''
+            feature = e.features[0]
+            popupContent += '<table class="info-table">'
+            if('label_field' in layer){   
+                popupContent += '<tr><th colspan="2">'+feature.properties[layer['label_field']]+"</th></tr>"
+            }
+            if('fields' in layer){
+                requiredFields = layer['fields']
+                if(requiredFields.indexOf('*') > -1){
+                    requiredFields = Object.keys(feature.properties)
+                }
+                for(var i=0; i < requiredFields.length; i++){
+                    fieldName = layer["metadata"][requiredFields[i]]["alias"]
+                    fieldType = layer["metadata"][requiredFields[i]]["type"]
+                    if(feature.properties[requiredFields[i]] && 
+                        feature.properties[requiredFields[i]] != "null"){
+                        if(fieldType === "esriFieldTypeDate"){
+                            dateString = new Date(feature.properties[requiredFields[i]]).toLocaleString("he-IL")
+                            popupContent += "<tr><td>"+fieldName+"</td><td>"+dateString+"</td></tr>"    
+                        }else{
+                            if(fieldName == 'אתר אינטרנט'){
+                                popupContent += `<tr><td>${fieldName}</td><td><a href="${feature.properties[requiredFields[i]]}">${feature.properties[requiredFields[i]]}</a></td></tr>`
+                            }else{
+                                popupContent += "<tr><td>"+fieldName+"</td><td>"+feature.properties[requiredFields[i]]+"</td></tr>"
+                            }
+                        }
+                        
+                    }
+                }
+                popupContent += "</table>"
+            }
+            
+        
+            return popupContent
+    }
+
+    function addMobileHighlight(e){
+        let feature = e.features[0];
+        let layer = feature.layer;
+        if(map.getLayer('highlight')){
+            map.removeLayer('highlight')
+        }
+        let highlightLayer = buildMobileHighlightLayer(feature,layer);
+        map.addLayer(highlightLayer)//,"שמות מקומות") //just under the top layer in basemap
+    }
+
+    function buildMobileHighlightLayer(feature,layer){
+        let layerType = layer.type;
+        if(map.getSource('highlight-source') === undefined){
+            map.addSource('highlight-source', {
+                type: 'geojson',
+                generateId:true,
+                data: fakeSource
+            })
+        }
+        let dataSource = {
+            "type": "FeatureCollection",
+            "features": [feature.toJSON()]
+        };
+        map.getSource('highlight-source').setData(dataSource)
+        env.currentHighlightLayer = layer.id
+        let highlightLayer
+        if(layerType == "symbol"){
+            highlightLayer = {
+                "id": "highlight",
+                "type": "circle",
+                "source": 'highlight-source',
+                "minzoom": 9,
+                "paint": {
+                  "circle-opacity": 0,
+                  "circle-stroke-width": 3,
+                  "circle-stroke-color": "rgba(57, 201, 186, 1)",
+                  "circle-radius": 12
+                }
+              }
+        }else if(layerType = "fill"){
+            highlightLayer = {
+                "id": "highlight",
+                "type": "line",
+                "source": 'highlight-source',
+                "minzoom": 8,
+                "paint": {
+                  "line-color": "rgba(57, 201, 186, 1)"
+                  ,
+                  "line-width": 6
+                }
+              }
+
+        }else if(layerType = "line"){
+            highlightLayer = {
+                "id": "highlight",
+                "type": "line",
+                "source": 'highlight-source',
+                "minzoom": 8,
+                "paint": {
+                  "line-color": "rgba(57, 201, 186, 1)"
+                  ,
+                  "line-width": 6
+                }
+              }
+        }
+        return highlightLayer
     }
 
     /*

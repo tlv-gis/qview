@@ -62,8 +62,8 @@
         },
         {
             "id":488,
-            "name":"parking3",
-            "name_heb":"חניונים ציבוריים",
+            "name":"parking4",
+            "name_heb":"חניוני לילה לתושבים",
             "fields":["shem","ktovet","num_vehicles","contact","phone","ahuzat_hof_code","taarif_yom","chalon_taarif_yom","taarif_layla",
                 "hearot_atar","sug_chenyon","rav_chenyon","heaarot"]
         },
@@ -91,47 +91,47 @@
         {
             "layers":[577],
             "label":"שבילי\nאופניים",
-            "icon":"icons/Bicycle paths icon .svg"
+            "icon":"icons/bikes_new_icon.svg"
         },
         {
             "layers":[835],
             "label":"תחנות תל אופן",
-            "icon":"icons/telofan_favicon_no_bg.svg"
+            "icon":"icons/telofan_new_icon.svg"
         },
         {
             "layers":[602],
             "label":"אוטותל",
-            "icon":"icons/autotel.svg"
+            "icon":"icons/autotel_new_icon.svg"
         },
         {
             "layers":[680],
             "label":"רחובות\nסגורים לתנועה",
-            "icon":"icons/close directions icon.svg"
+            "icon":"icons/closed_street_new_icon.svg"
         },
         {
             "layers":[633],
             "label":"תחנות\nרכבת קלה",
-            "icon":"icons/Train Station icon.svg"
+            "icon":"icons/rail_new_icon.svg"
         },
         {
             "layers":[956],
             "label":"תחנות\nאוטובוס",
-            "icon":"icons/transport_bus_station.svg"
+            "icon":"icons/bus_stop_new_icon.svg"
         },
         {
-            "layers":[970,555,488],
+            "layers":[970,555,556,488],
             "label":"חניונים",
-            "icon":"icons/local_parking.svg"
+            "icon":"icons/parking_new_icon.svg"
         },
         {
             "layers":[992,993],
             "label":"נעים בסופ\"ש",
-            "icon":"icons/naim basofash.svg"
+            "icon":"icons/naim_basofash_dark.svg"
         },     
         {
             "layers":[860],
             "label":"חניה לקורקינטים ציבוריים",
-            "icon":"icons/Bicycle paths icon .svg"
+            "icon":"icons/scooter_new_icon.svg"
         }
     ]
 }
