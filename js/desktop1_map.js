@@ -271,6 +271,7 @@ function addButtons(mapJson){
     //map.addControl(legend,'bottom-right')
   }
 
+  toggleLoader();
 }
 function addDesktopButtons(buttonDefs,mapJson){
   let buttonSpan = document.createElement('span');
@@ -571,6 +572,21 @@ function addMapEvents(){
         env.currentHighlightLayer = '';
     }
   })
+  
+}
+
+/**
+ * Toggles the visibility of the element with id "waitingSymbol".
+ */
+ function toggleLoader() {
+  const element = document.getElementById("waitingSymbol");
+  if (element) {
+    if (element.style.display === "none") {
+      element.style.display = "";
+    } else {
+      element.style.display = "none";
+    }
+  }
 }
 
 function waitForSource(e,layer,_callback){

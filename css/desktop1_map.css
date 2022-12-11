@@ -357,6 +357,19 @@ body {
     
 }
 
+#waitingSymbol {
+    display: block;   
+    z-index: 9999;
+    background: url(../icons/ajax-loader.gif) center no-repeat #3c3c3c;            
+    opacity: 0.3;      
+    pointer-events: none;
+    height: 100%;  
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
 @media (min-width: 992px){
 
     /*
