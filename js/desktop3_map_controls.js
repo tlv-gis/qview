@@ -20,13 +20,13 @@
       let innerHTML = '<div ng-if="\'True\' ==\'True\'" class="ShhunaTitle ng-binding ng-scope" ng-bind-html="\'<b>מפת מרחב</b> הצג לפי:\'"><b>מפת מרחב</b> הצג לפי:</div>'
       
       if(isMobile){
-         innerHTML =`<div class="ShhunaTitle"><img class="tlv-mobile-logo" src="./icons/logo_new_design.png"></div>`;
+         innerHTML =`<div class="ShhunaTitle"><img class="tlv-mobile-logo" src="./icons/logo_new_design.svg"></div>`;
       }else{
         if(this.title.length > 0){
-          innerHTML =`<div class="ShhunaTitle"><img class="tlv-mobile-logo" src="./icons/logo_new_design.png"></div>`;
+          innerHTML =`<div class="ShhunaTitle"><img class="tlv-mobile-logo" src="./icons/logo_new_design.svg"></div>`;
          }else{
           if(this.location.length > 0){
-            innerHTML =`<div class="ShhunaTitle"><img class="tlv-mobile-logo" src="./icons/logo_new_design.png"></div>`;
+            innerHTML =`<div class="ShhunaTitle"><img class="tlv-mobile-logo" src="./icons/logo_new_design.svg"></div>`;
            }
          }
       }
