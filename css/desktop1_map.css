@@ -230,7 +230,6 @@ body {
 .button {
     background-color: #ffffff; 
     font-family: 'Assistant';
-    color: black;
     padding: 0;
     text-align: justify;
     text-justify: inter-word;
@@ -259,7 +258,7 @@ body {
     padding-right: 2.5%;
 }
 .button:hover{
-    background-color: rgb(48, 48, 48); 
+    background-color: rgb(48, 48, 48) !important; 
     color: white;
     
 }
@@ -270,98 +269,46 @@ body {
 .button:hover > img{
     filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(186deg) brightness(118%) contrast(119%);
 }
-.mapboxgl-ctrl .button:not(:disabled):hover{
-    background-color: rgb(48, 48, 48); 
-    color: white;
-}
 
-.button-on {
-    background-color: #00b0f0; 
-
-    color: white;
-    padding: 0;
-    text-align: justify;
-    text-justify: inter-word;
-    text-decoration: none;
-    display: inline-block;
-    
-    
-    border: none;
-    border-radius: 0px;
-    margin-top: 5px;
-    margin-left: 1vw;
-    width: 16vw;
-    height: 6.7vh;
-    font-size: 11px;
-    
-}
 .button-on > span{
-
-    width: 95%;
-    position: relative;
-    margin-top: 3px;
-    text-align: center;
     color: white;
 }
 .button-on > img{
     filter: contrast(75%);
 }
 .button-on:hover {
-    background-color: #f3f3f3; 
-    color: black;
+    background-color: white !important; 
 }
 .button-on:hover > span{
-    
-    color: black;
+    color: #2A3C66 !important;
 }
 .button-on:hover > img{
     filter: contrast(75%);
 }
+/*
 .mapboxgl-ctrl .button:not(:disabled):hover{
     background-color: rgb(48, 48, 48); 
     color: white;
 }
+*/
 
 .button-on {
-    background-color: rgb(48, 48, 48); 
+    
+    background-color: #2B75B5;
     color: white;
-    padding: 7px 16px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 14px;
-    height: 46px;
-    border-radius: 3px;
+    
 }
-.button-on > span{
-    margin-left:3px;
-    color: white;
-}
+/*
 .button-on > img{
     filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(186deg) brightness(118%) contrast(119%);
-}
-.button-on:hover {
-    background-color: #f3f3f3; 
-    color: black;
-}
-.button-on:hover > span{
-    margin-left:3px;
-    color: black;
-}
-.button-on:hover > img{
-    filter: none;
-}
-.mapboxgl-ctrl .button-on:not(:disabled):hover{
-    background-color: #f3f3f3; 
-    color: black;
-}
+}*/
+
 .button-text {
     display: inline-block;
     vertical-align: middle;
     /*font-family: 'BlenderBold';*/
     letter-spacing: normal;
     text-align: right;
-    color: #2b393f;
     width: 95%;
 
     font-family: 'Assistant' !important;

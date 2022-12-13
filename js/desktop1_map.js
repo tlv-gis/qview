@@ -305,7 +305,7 @@ function addDesktopButtons(buttonDefs,mapJson){
           addButtonLayer(layerIDs,()=>{
               if(this.value === "0"){
                 this.value = "1"
-                this.className = "button-on"
+                this.classList.add("button-on")
                   for(let layerI in layerIDs){
                       let layerID = layerIDs[layerI]
                       let layer = mapJson["layers"].filter(obj => {
@@ -346,7 +346,7 @@ function addDesktopButtons(buttonDefs,mapJson){
                   
               }else{
                 this.value = "0"
-                this.className = "button"
+                this.classList.remove('button-on')
                   for(layerI in layerIDs){
                       layerID = layerIDs[layerI]
                       layer = mapJson["layers"].filter(obj => {
@@ -444,7 +444,7 @@ function addMobileButtons(buttonDefs,mapJson){
       addButtonLayer(layerIDs,()=>{
           if(this.value === "0"){
             this.value = "1"
-            this.className = "button-on"
+            this.classList.add("button-on")
               for(let layerI in layerIDs){
                   let layerID = layerIDs[layerI]
                   let layer = mapJson["layers"].filter(obj => {
@@ -485,7 +485,7 @@ function addMobileButtons(buttonDefs,mapJson){
               
           }else{
             this.value = "0"
-            this.className = "button"
+            this.classList.remove("button-on")
               for(layerI in layerIDs){
                   layerID = layerIDs[layerI]
                   layer = mapJson["layers"].filter(obj => {
