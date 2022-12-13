@@ -104,8 +104,6 @@ body {
 .buttons-nav {
     
     position: absolute;
-    width: 6vw;
-    height: 10.1vh;
     float: right;
     margin-right: calc(12.6vw + 3%);
     margin-top: 2.2vh;
@@ -113,13 +111,11 @@ body {
     background: #FFFFFF;
     box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.25);
 
-}
-.button-nav {
     /*margin-top: 21px; */
     
     position: relative;
-    width: 6vw;
-    height: 10.1vh;
+    width: 6vw !important;
+    height: calc(6vw * 0.956);/*10.1vh;*/
     left: 0;
     top: 0;
     background-color: #fff;
@@ -132,33 +128,39 @@ body {
 }
 .layers-nav-icon {
     
-    position: relative;
-    width: 56.5%;
-    height: 41.7%;
+    display: block;
+    height: calc(0.417 * (6vw * 0.956));
+    width: 80%;
     margin-left: auto;
     margin-right: auto;
-    top: 1.0921vh;
+    margin-top: 10%;
+ 
 }
 .layers-nav-text{
-    position: absolute;
+    display: inline-block;
     /*width: 29px;
-    height: 14px;
-    left: 20%;*/
+    height: 14px;*/
+    
     top: 66%;
     font-family: 'Assistant';
     font-style: normal;
     font-weight: 600;
     font-size: 20px;
     line-height: 26px;
-    text-align: right;
+
     margin-left: auto;
     margin-right: auto;
+    margin-top: 10%;
 }
 .buttons-nav .drop-down {
-    width: 6vw;
+    width: 80vw;
     position: absolute;
-    height: 80vh;
-    left: 0;
+    height: calc(6vw * 0.956);
+    max-height: calc(6vw * 0.956);
+    
+    display: flex;
+    white-space: nowrap;
+    right: 0;
     top: 0;
     list-style: none; 
     overflow: hidden; /* When ul height is reduced, ensure overflowing li are not shown */
@@ -166,43 +168,61 @@ body {
     margin: 0 auto;
     padding: 0;
     text-align: center;
-    -webkit-transition: height 0.3s ease;
-    transition: height 0.3s ease;
+    -webkit-transition: width 0.3s ease;
+    transition: width 0.3s ease;
+    transition: display 0.3s ease;
+    z-index: 0;
 }
 .buttons-nav .drop-down.closed {
-    height: 10.1vh;
+    height: calc(6vw * 0.956);
+    width: 6vw;
 }
-.button-nav .drop-down li {
-    border-bottom: 5px solid #2c3e50;
+.button-nav {
+    height: calc(6vw * 0.956);
+    width: 6vw;
+    align-content:inherit;
 }
-  
-.button-nav .drop-down li {
+
+.drop-down.closed > li {
+    display: none;
+}
+.buttons-span li {
     display: block;
-    color: #ecf0f1;
+    color: #2A3C66;
     text-decoration: none;
-    padding: 10px; /* Larger touch target area */
+    padding: 0; /* Larger touch target area */
+    max-width: 6vw;
+    width: 6vw;
+    height: calc(6vw * 0.956);
+    display: inline;
+    margin-right: 0.5vw;
+    
+    z-index: 1;
 }
   
-nav .drop-down li:first-child button:after {
-    
-    color: rgba(0, 0, 0, 0);
-    float: left;
-    margin-left: -30px; /* Excessive -margin to bring link text back to center */
-    margin-right: 5px;
+.drop-down li:first-child{
+    width: 6vw;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-right: 0;
 }
+
 
 .icon {
     /*margin-left: 10px;*/
     border: none;
     /*display: inline-block;*/
     display: block;
-    height: calc(0.417 * 6.7vh);
-    width: calc(0.517 * 16vw);
+    height: calc(0.417 * (6vw * 0.956));
+    width: 50%;/*calc(0.517 * 16vw);*/
     
     font-size: 21px;
     color: #2b393f;
     background-color: transparent;
-    margin-top: 3%;
+    margin-top: 1.5%;
     margin-left: auto;
     margin-right: auto;
 
@@ -220,22 +240,22 @@ nav .drop-down li:first-child button:after {
     
     border: none;
     border-radius: 0px;
-    margin-top: 5px;
+    margin-top: 0px;
+    margin-right: 5px;
     margin-left: 1vw;
     width: 6vw;
-    height: 10.1vh;
+    height: calc(6vw * 0.956);
     font-size: 11px;
     overflow-y: hidden;
 }
 .button > span{
-    font-family: 'Assistant';
-    line-height: 10px;
-    font-size: 11px;
+
     width: 95%;
+    height: 30%;
     position: relative;
     margin-top: 3px;
     text-align: center;
-    color: black;
+
     padding-right: 2.5%;
 }
 .button:hover{
@@ -257,7 +277,7 @@ nav .drop-down li:first-child button:after {
 
 .button-on {
     background-color: #00b0f0; 
-    font-family: 'Assistant';
+
     color: white;
     padding: 0;
     text-align: justify;
@@ -276,8 +296,7 @@ nav .drop-down li:first-child button:after {
     
 }
 .button-on > span{
-    font-family: 'Assistant';
-    font-size: 11px;
+
     width: 95%;
     position: relative;
     margin-top: 3px;
@@ -340,14 +359,21 @@ nav .drop-down li:first-child button:after {
     display: inline-block;
     vertical-align: middle;
     /*font-family: 'BlenderBold';*/
-    font-size: 12px;
-    font-weight: bold;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 14px;
     letter-spacing: normal;
     text-align: right;
     color: #2b393f;
+    width: 95%;
+
+    font-family: 'Assistant' !important;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 19px;
+    font-size: 1.5em;
+    line-height: 18px;
+    white-space: break-spaces;
+    
+
+    color: #2A3C66;
 }
 .ShhunaReSize {
     display: inline-block;
@@ -395,24 +421,29 @@ nav .drop-down li:first-child button:after {
     color: #2b393f;
     display: inline-block;
     /*vertical-align: middle;*/
-    padding: 0 5px 0 5px;
+    padding: 0 ;/*5px 0 5px;*/
     margin-bottom: 5px;
     white-space: nowrap;
 
     width: 12.6vw;
-    height: 10.1vh;
+    height: calc(12.6vw * 0.45);/*10.1vh;*/
     border-radius: 3px;
     margin-top: 2.2vh;
     right: 1.5%;
     position: fixed;
     box-shadow: 0px 4px 17px rgba(24, 44, 63, 0.06);
+
+    display: flex;
 }
 .tlv-mobile-logo{
-    width: 63.7%;
-    height: 63%;
-    padding-top: 9.15%;
-    padding-right: 9%;
-    float: right;
+    /*width: 66.1%;*/
+    height: 84%;
+    padding: 0%;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: 10.4%;
+    
+    /*float: right;*/
 }
 .gis-icons {
     text-align: right;
@@ -479,72 +510,4 @@ nav .drop-down li:first-child button:after {
     position: fixed;
     top: 0;
     left: 0;
-}
-
-@media (min-width: 1200px){
-
-    /*.gis-header {
-        padding-bottom: 30px;
-        height: 90px;
-    
-    }*/
-    .gis-map {
-        /*height: 900px;*/
-        background-size: cover;
-        /*top: 90px;*/
-    }
-    .gis-header .gis-icons-wrap {
-        display: block;
-    }
-    .gis-header .gis-icons-wrap {
-        display: table-cell;
-        vertical-align: middle;
-        text-align: left;
-        padding: 0 0 0 25px;
-        width: 100%;
-    }
-    .gis-icons {
-        list-style: none;
-        margin: 0;
-        height: 38px;
-        white-space: nowrap;
-    }
-    .gis-icons {
-        text-align: right;
-        list-style: none;
-        margin: 0;
-        height: 38px;
-        white-space: nowrap;
-        padding-right: 0;
-    }
-    .gis-icons li {
-        list-style: none;
-        display: table;
-        float: right;
-        padding-right: 25px;
-        cursor: pointer;
-        text-align: right;
-        height: 38px;
-        line-height: 42px;
-    }
-    .icon{
-        margin-right:3px;
-        
-    }
-    
-}
-
-
-
-@media (min-width: 992px){
-
-    /*
-    .gis-header {
-        height: 70px;
-    }
-    */
-    .gis-map {
-        background-position: left top;
-        /*top: 70px;*/
-    }
 }
