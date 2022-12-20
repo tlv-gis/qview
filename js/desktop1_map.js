@@ -242,10 +242,10 @@ function parseMap(QS,headerProperties={}){
           /*map.addControl(legendAdd)*/
           map.addControl(new maplibregl.NavigationControl(),'bottom-left');
         }else{
-          map.addControl(infoControl,'bottom-right')
           map.addControl(locateMeControl);
           locateMeControl._container.classList.add('locate-container');
         }
+        map.addControl(infoControl,'bottom-right')
         if(addTable){
           //map.addControl(tableAdd)
         }
