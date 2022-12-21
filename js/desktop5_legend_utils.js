@@ -16,11 +16,9 @@ let LegendBuilder = (function(){
             map.removeControl(legend)
           }
         }else{
-          if(isMobile){
+          
             map.addControl(legend, 'bottom-right')
-          }else{
-            map.addControl(legend)
-          }
+          
           if(legendAddControl){
             legendAddControl.title = "כיבוי מקרא"
           }
@@ -72,20 +70,20 @@ let LegendBuilder = (function(){
             layerHeader.classList.add('legend-layer-name')
             layerHeader.innerHTML = layer["name_heb"]
             LegendContent.append(layerHeader)
-            if(isMobile){
+            //if(isMobile){
               let layerLine = document.createElement('i');
               layerLine.classList.add('legend-line');
               layerLine.innerText = '|'
               LegendContent.append(layerLine)
-            }
+            //}
             let layerIconsList = buildLayerIconsList(layer)
             LegendContent.append(layerIconsList)
-            if(isMobile){
+            //if(isMobile){
               let endLine = document.createElement('i');
               endLine.classList.add('legend-line');
               endLine.innerText = '|'
               LegendContent.append(endLine)
-            }
+            //}
             mapLegendDiv.append(LegendContent)
           }
         }
