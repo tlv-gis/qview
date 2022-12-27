@@ -1,5 +1,5 @@
 {
-    "title":"דיגיתל - תנועה וחניה",
+    "title":"דיגיתל - תנועה וחנייה",
     "layers":[
         {
             "id":577,
@@ -83,7 +83,7 @@
         {
             "id":860,
             "name":"scooters",
-            "name_heb":"תאי חניה לכלים זעירים",
+            "name_heb":"תאי חנייה לכלים זעירים",
             "fields":["address","location","cell_size"]
         }
     ],
@@ -130,7 +130,7 @@
         },     
         {
             "layers":[860],
-            "label":"חניה לקורקינטים שיתופיים",
+            "label":"חנייה לקורקינטים שיתופיים",
             "icon":"icons/scooter_new_icon.svg"
         }
     ]
