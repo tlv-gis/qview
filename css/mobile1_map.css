@@ -13,11 +13,11 @@ body {
     font-family: 'Roboto Light', Arial, sans-serif;
 }
 .map-container {
-    width: 98%;
+    width: 100%;
     position: absolute; 
-    top: 1%; 
-    left: 1%;/* DELETE LATER*/
-    height: 98%;
+    top: 0; 
+    left: 0;
+    height: 100%;
     
 }
 .filler-ctrl{
@@ -45,9 +45,10 @@ body {
     bottom: 0; 
     z-index: 4;
     margin: 0;
-    /*padding: 0px;
-    /*padding-bottom: 10px;
-    padding-top: 10px;*/
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+    padding-bottom: 30px !important;
+    padding-top: 10px !important;
 }
 .map-legend-button{
     background-color: #fff;
@@ -433,7 +434,7 @@ nav .drop-down li:first-child button:after {
     margin-right: 5px;
 }
 
-.icon {
+.button-icon {
     /*margin-left: 10px;*/
     border: none;
     /*display: inline-block;*/
@@ -599,23 +600,20 @@ nav .drop-down li:first-child button:after {
     font-size: 18px;
     line-height: 1.11;
     letter-spacing: normal;
-    text-align: right;
+    text-align: right  !important;
     color: #2b393f;
     display: inline-block;
     /*vertical-align: middle;*/
-    padding: 0 5px 0 5px;
-    margin-bottom: 5px;
-    white-space: nowrap;
-    
-}
-.ShhunaTitle{
-    width: 26.4vw;
-    height: 6.4vh;
-    border-radius: 3px;
-    margin-top: 2.2vh;
-    left: 68.9%;
-    position: fixed;
-    box-shadow: 0px 1.96825px 8.36508px rgba(24, 44, 63, 0.06);
+    padding: 0 5px 0 5px !important;
+    margin-bottom: 5px !important;
+    white-space: nowrap !important;
+    width: 26.4vw !important;
+    height: 6.4vh !important;
+    border-radius: 3px !important;
+    margin-top: 2.2vh !important;
+    left: 68.9% !important;
+    position: fixed !important;
+    box-shadow: 0px 1.96825px 8.36508px rgba(24, 44, 63, 0.06) !important;
 }
 .ShhunaTitle-text{
     height: 100%;
@@ -635,11 +633,12 @@ nav .drop-down li:first-child button:after {
     color: #0070c0;
 }
 .tlv-mobile-logo{
-    width: 63.7%;
-    height: 63%;
-    padding-top: 9.15%;
-    padding-right: 9%;
-    float: right;
+    width: 63.7% !important;
+    height: 63% !important;
+    padding-top: 9.15% !important;
+    padding-right: 9% !important;
+    float: right !important;
+    margin: 0;
 }
 .gis-icons {
     text-align: right;

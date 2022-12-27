@@ -260,12 +260,9 @@ function addButtons(mapJson){
   var mapHeader = document.getElementsByClassName('map-header')[0];
   let buttonDefs = mapJson['buttons']
   let buttonSpan
-  //if(isMobile){
-    buttonSpan = addMobileButtons(buttonDefs,mapJson)
-  /*}else{
-    map.addControl(new FillerControl({'height':mapHeaderControl.container.offsetHeight-10}),'top-right')
-    buttonSpan = addDesktopButtons(buttonDefs,mapJson)
-  }*/
+
+  buttonSpan = buildButtons(buttonDefs,mapJson)
+
   
   mapHeader.append(buttonSpan)
   if(isMobile){
@@ -274,135 +271,18 @@ function addButtons(mapJson){
 
   toggleLoader();
 }
-function addDesktopButtons(buttonDefs,mapJson){
-  let buttonSpan = document.createElement('span');
-  buttonSpan.classList.add('buttons-span')
 
-  for(var i=0;i<buttonDefs.length;i++){
-      
-      var buttonID = 'button-'+i
-      mapJson['buttons'][i]['id'] = buttonID
-      var currentButtonDef = buttonDefs[i]
-      var layerIDs = currentButtonDef['layers']
-      addButtonLayer(layerIDs)
-      
-
-      var newSpan = document.createElement('span');
-      var newButton = document.createElement('button');
-      var newButtonIcon = document.createElement('img');
-      var newButtonText = document.createElement('span');
-      newButton.className = "button"
-      newButton.id = buttonID
-
-      newSpan.classList.add('button-span');
-      newButton.type = "button";
-      newButton.value = 0;
-      newButton.onclick = function(){
-          currentButtonDef = mapJson["buttons"].filter(obj => {
-              return obj.id === this.id
-            })[0]
-          layerIDs = currentButtonDef['layers']
-          addButtonLayer(layerIDs,()=>{
-              if(this.value === "0"){
-                this.value = "1"
-                this.classList.add("button-on")
-                  for(let layerI in layerIDs){
-                      let layerID = layerIDs[layerI]
-                      let layer = mapJson["layers"].filter(obj => {
-                          return obj.id === layerID
-                        })[0]
-                      env.active_layers.push(layer)
-                      map.setLayoutProperty(layer["name"],'visibility','visible')  
-                      let strokeLayerName = layer['name']+'-stroke'
-                      let labelLayerName = layer['name']+'-labels'
-                      if(neighborhood_url){}else{
-                        let sourceName =  layer['name']+"-source"
-                        
-                        current_bounds = utils.updateCurrentBounds(map)
-                        currentLayerUrl = utils.getLayerUrl(layer)
-                        map.getSource(sourceName).setData(currentLayerUrl)
-                      }
-                      if(map.getLayer(strokeLayerName) !== undefined){
-                        map.setLayoutProperty(strokeLayerName,'visibility','visible')  
-                      }  
-                      if(map.getLayer(labelLayerName) !== undefined){
-                        map.setLayoutProperty(labelLayerName,'visibility','visible')  
-                      }
-                      if(layer["type"] && layer["type"] === "raster"){
-                        sourceName = layer['name']+'-source'
-                        esriRenderer.updateRaster(sourceName)
-                        
-                      }
-                      map.once('sourcedataloading', function(e) {
-                          waitForSource(e,layer,function(){
-                            if(map.hasControl(tables)){
-                              map.removeControl(tables)
-                              tables = new LayerTable({'layers':env.active_layers});
-                              map.addControl(tables)
-                            }
-                          })
-                      });
-                  }
-                  
-              }else{
-                this.value = "0"
-                this.classList.remove('button-on')
-                  for(layerI in layerIDs){
-                      layerID = layerIDs[layerI]
-                      layer = mapJson["layers"].filter(obj => {
-                          return obj.id === layerID
-                        })[0]
-                      env.active_layers = env.active_layers.filter(function( obj ) {
-                          return obj.id !== layerID;
-                      });
-                      map.setLayoutProperty(layer["name"],'visibility','none')  
-                      strokeLayerName = layer['name']+'-stroke'
-                      labelLayerName = layer['name']+'-labels'
-                      if(map.getLayer(strokeLayerName) !== undefined){
-                        map.setLayoutProperty(strokeLayerName,'visibility','none')  
-                      }  
-                      if(map.getLayer(labelLayerName) !== undefined){
-                        map.setLayoutProperty(labelLayerName,'visibility','none')  
-                      }  
-                      map.once('sourcedataloading', function(e) {
-                        waitForSource(e,layer,function(){
-                          if(map.hasControl(tables)){
-                            map.removeControl(tables)
-                            tables = new LayerTable({'layers':env.active_layers});
-                            map.addControl(tables)
-                          }
-                        })
-                    });
-                  }
-                  
-              }
-              LegendBuilder.updateLegend(mapJson)
-          })
-      }
-      var b = document.createElement('b')
-      b.innerText = currentButtonDef['label']+" "
-      newButtonIcon.src = currentButtonDef['icon']
-      newButtonIcon.classList.add('icon')
-      newButtonText.innerText = currentButtonDef['label']
-      newButtonText.classList.add('button-text')
-      newButton.append(newButtonText,newButtonIcon)
-      newSpan.append(newButton)
-      buttonSpan.append(newSpan)
-  }
-  return buttonSpan;
-
-}
-function addMobileButtons(buttonDefs,mapJson){
+function buildButtons(buttonDefs,mapJson){
   let buttonsNav = document.createElement('nav');
-  buttonsNav.classList.add('buttons-nav')
+  buttonsNav.classList.add(isMobile ? 'buttons-nav': 'desktop-buttons-nav')
   
 
   let buttonUL = document.createElement('ul');
-  buttonUL.classList.add('buttons-span')
-  buttonUL.classList.add('drop-down','closed')
+  buttonUL.classList.add(isMobile ? 'buttons-span': 'desktop-buttons-span')
+  buttonUL.classList.add(isMobile ? 'drop-down' : 'desktop-drop-down' ,'closed')
 
   let buttonNav = document.createElement('li');
-  buttonNav.classList.add('button-nav');
+  buttonNav.classList.add(isMobile ? 'button-nav': 'desktop-button-nav');
   buttonNav.onclick = function() {
 
       this.parentNode.classList.toggle('closed')
@@ -410,11 +290,11 @@ function addMobileButtons(buttonDefs,mapJson){
   }
   let layersNavIcon = document.createElement('img');
   layersNavIcon.src = './icons/layers_closed_centered.svg';
-  layersNavIcon.classList.add('layers-nav-icon');
+  layersNavIcon.classList.add(isMobile ? 'layers-nav-icon': 'desktop-layers-nav-icon');
   buttonNav.append(layersNavIcon);
   let layersNavText = document.createElement('b');
   layersNavText.innerText = 'שכבות';
-  layersNavText.classList.add('layers-nav-text');
+  layersNavText.classList.add(isMobile ? 'layers-nav-text' : 'desktop-layers-nav-text');
   buttonNav.append(layersNavText);
 
   buttonUL.append(buttonNav)
@@ -430,10 +310,10 @@ function addMobileButtons(buttonDefs,mapJson){
     let newButtonIcon = document.createElement('img');
     let newButtonText = document.createElement('span');
 
-    newButton.classList.add('button')
-    newButton.classList.add('mobile-button-closed')
+    newButton.classList.add(isMobile ? 'button' : 'desktop-button')
+    newButton.classList.add(isMobile ? 'mobile-button-closed': 'desktop-button-closed')
     newButton.id = buttonID
-    newButton.classList.add('button-span');
+    newButton.classList.add(isMobile ? 'button-span' : 'desktop-button-span');
     newButton.type = "button";
     newButton.value = 0;
     newButton.onclick = function(){
@@ -444,7 +324,7 @@ function addMobileButtons(buttonDefs,mapJson){
       addButtonLayer(layerIDs,()=>{
           if(this.value === "0"){
             this.value = "1"
-            this.classList.add("button-on")
+            this.classList.add(isMobile ? "button-on": "desktop-button-on")
               for(let layerI in layerIDs){
                   let layerID = layerIDs[layerI]
                   let layer = mapJson["layers"].filter(obj => {
@@ -485,7 +365,7 @@ function addMobileButtons(buttonDefs,mapJson){
               
           }else{
             this.value = "0"
-            this.classList.remove("button-on")
+            this.classList.remove(isMobile ? "button-on" : "desktop-button-on")
               for(layerI in layerIDs){
                   layerID = layerIDs[layerI]
                   layer = mapJson["layers"].filter(obj => {
@@ -529,9 +409,9 @@ function addMobileButtons(buttonDefs,mapJson){
     let b = document.createElement('b')
     b.innerText = currentButtonDef['label']+" "
     newButtonIcon.src = currentButtonDef['icon']
-    newButtonIcon.classList.add('icon')
+    newButtonIcon.classList.add(isMobile ? 'button-icon' : 'desktop-button-icon')
     newButtonText.innerText = currentButtonDef['label']
-    newButtonText.classList.add('button-text')
+    newButtonText.classList.add(isMobile ? 'button-text' : 'desktop-button-text')
     newButton.append(newButtonIcon,newButtonText)
     //newSpan.append(newButton)
     newLI.append(newButton)

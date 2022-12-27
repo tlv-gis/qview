@@ -245,7 +245,7 @@ body {
     height: 100%;
 }
 
-.buttons-span {
+.desktop-buttons-span {
     margin-bottom: 5px;
     margin-right: 0.5%;
     line-height: 15px;
@@ -253,11 +253,11 @@ body {
     display: block;
 }
 
-.button-span {
+.desktop-button-span {
     padding-bottom: 0.02vh;
     margin-left: 0.1vw;
 }
-.buttons-nav {
+.desktop-buttons-nav {
     
     position: absolute;
     float: right;
@@ -282,7 +282,7 @@ body {
     
 
 }
-.layers-nav-icon {
+.desktop-layers-nav-icon {
     
     display: block;
     height: calc(0.417 * (6vw * 0.956));
@@ -292,7 +292,7 @@ body {
     margin-top: 10%;
  
 }
-.layers-nav-text{
+.desktop-layers-nav-text{
     display: inline-block;
     /*width: 29px;
     height: 14px;*/
@@ -308,7 +308,7 @@ body {
     margin-right: auto;
     margin-top: 10%;
 }
-.buttons-nav .drop-down {
+.desktop-buttons-nav .desktop-drop-down {
     width: 80vw;
     position: absolute;
     height: calc(6vw * 0.956);
@@ -329,20 +329,20 @@ body {
     transition: display 0.3s ease;
     z-index: 0;
 }
-.buttons-nav .drop-down.closed {
+.desktop-buttons-nav .desktop-drop-down.closed {
     height: calc(6vw * 0.956);
     width: 6vw;
 }
-.button-nav {
+.desktop-button-nav {
     height: calc(6vw * 0.956);
     width: 6vw;
     align-content:inherit;
 }
 
-.drop-down.closed > li {
+.desktop-drop-down.closed > li {
     display: none;
 }
-.buttons-span li {
+.desktop-buttons-span li {
     display: block;
     color: #2A3C66;
     text-decoration: none;
@@ -356,7 +356,7 @@ body {
     z-index: 1;
 }
   
-.drop-down li:first-child{
+.desktop-drop-down li:first-child{
     width: 6vw;
     z-index: 2;
     display: flex;
@@ -367,7 +367,7 @@ body {
 }
 
 
-.icon {
+.desktop-button-icon {
     /*margin-left: 10px;*/
     border: none;
     /*display: inline-block;*/
@@ -383,7 +383,7 @@ body {
     margin-right: auto;
 
 }
-.button {
+.desktop-button {
     background-color: #ffffff; 
     font-family: 'Assistant';
     padding: 0;
@@ -403,7 +403,7 @@ body {
     font-size: 11px;
     overflow-y: hidden;
 }
-.button > span{
+.desktop-button > span{
 
     width: 95%;
     height: 30%;
@@ -413,32 +413,32 @@ body {
 
     padding-right: 2.5%;
 }
-.button:hover{
+.desktop-button:hover{
     background-color: rgb(48, 48, 48) !important; 
     color: white;
     
 }
-.button:hover > span{
+.desktop-button:hover > span{
     
     color: white;
 }
-.button:hover > img{
+.desktop-button:hover > img{
     filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(186deg) brightness(118%) contrast(119%);
 }
 
-.button-on > span{
+.desktop-button-on > span{
     color: white;
 }
-.button-on > img{
+.desktop-button-on > img{
     filter: contrast(75%);
 }
-.button-on:hover {
+.desktop-button-on:hover {
     background-color: white !important; 
 }
-.button-on:hover > span{
+.desktop-button-on:hover > span{
     color: #2A3C66 !important;
 }
-.button-on:hover > img{
+.desktop-button-on:hover > img{
     filter: contrast(75%);
 }
 /*
@@ -448,7 +448,7 @@ body {
 }
 */
 
-.button-on {
+.desktop-button-on {
     
     background-color: #2B75B5;
     color: white;
@@ -459,7 +459,7 @@ body {
     filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(186deg) brightness(118%) contrast(119%);
 }*/
 
-.button-text {
+.desktop-button-text {
     display: inline-block;
     vertical-align: middle;
     /*font-family: 'BlenderBold';*/
