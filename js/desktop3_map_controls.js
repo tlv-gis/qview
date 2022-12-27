@@ -141,7 +141,7 @@ class MapTableButton {
     this.container = document.createElement('div');
     this.container.id = "add-map-table-button"
     this.container.className = 'mapboxgl-ctrl mapboxgl-ctrl-group map-table-button';
-    this.container.innerHTML = '<button><i class="fa-solid fa-table"></i></button>';
+    this.container.innerHTML = '<button><i class="add-table-button"></i></button>';
     this.container.title = "פתיחת טבלאות"
     this.container.value = 0;
     this.container.onclick = tableBuilder.addTables

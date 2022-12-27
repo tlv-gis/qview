@@ -576,6 +576,21 @@ body {
     max-width: 25vw;
     max-height: 40vh;
 }
+.add-table-button {
+    
+    left: 5%;
+    position: absolute;
+    top: 5%;
+    width: 90%;
+    background-size: 125px 125px;
+    display: block;
+    height: 90%;
+    background-image: url("../icons/table2.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 90% 90%;
+}
+
 .popup-table {
     /*font-family: Arial, Helvetica, sans-serif;*/
     border-collapse: collapse;
