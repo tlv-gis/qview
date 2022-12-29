@@ -82,9 +82,10 @@ body {
     white-space: nowrap;
     cursor: default;
     /*margin-right: 0vw;*/
-    width: 98vw;
-    height: 6vh;
-    max-height: 6vh;
+    width: 100vw !important;
+    max-width: 100vw !important;
+    height: 6vh !important;
+    max-height: 6vh !important;
     position: absolute;
     bottom: 0;
     right: 0;
@@ -209,12 +210,12 @@ body {
 }
 .info-ctrl{
     position: relative;
-    right: -1px !important;
+    right: 0 !important;
     bottom: 5.8vh !important;
     height: 20vh;
-    width: 99vw;
-    padding-left: 0.5vw;
-    padding-right: 0.5vw;
+    width: 100vw;
+    /*padding-left: 0.5vw;
+    padding-right: 0.5vw;*/
     margin: 0 !important;
     z-index: 3;
     overflow-y: scroll;
@@ -235,9 +236,9 @@ body {
     bottom: 5.8vh !important;
     height: 0vh;
     /*display: none;*/
-    width: 99vw;
-    padding-left: 0.5vw;
-    padding-right: 0.5vw;
+    width: 100vw;
+    /*padding-left: 0.5vw;
+    padding-right: 0.5vw;*/
     margin: 0 !important;
     z-index: 3;
     border: 0 solid #D3E0EB00 !important;
