@@ -151,9 +151,14 @@ esriRenderer = (function(){
                         parseUniqueValueRenderer(renderer,layer)
                     }
                 })
+                .catch((error) => {
+                    console.log(layer)
+                    console.error('There has been a problem with your fetch operation:', error);
+                  });
             }
         }
         catch (err) {
+            console.log(layer)
             console.log(arguments.callee.toString(), err);
         }
     }
