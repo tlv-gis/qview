@@ -127,7 +127,7 @@ body {
 }
 .mapboxgl-ctrl-bottom-right .map-legend {
     max-width: 95vw;
-    right: 0vw;
+    right: 1.5vw;
 }
 .mapboxgl-ctrl-bottom-right > .info-ctrl.minimized ~
  .map-legend {
@@ -137,7 +137,7 @@ body {
 .mapboxgl-ctrl-bottom-right > .info-ctrl ~
 .map-legend {
     max-width: 95vw;
-    right: 20.4vw;
+    right: calc(20.4vw + 1.5vw);
 }
 
 .map-legend > .legend-item-container {
@@ -260,7 +260,7 @@ body {
 
 .info-ctrl{
     position: absolute;
-    right: 1.5px !important;
+    right: 1.5vw !important;
     bottom: 1.2vh !important;
     height: 20vh;
     width: 20vw;
