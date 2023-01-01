@@ -104,9 +104,12 @@ let LegendBuilder = (function(){
       if(layersVisible === 0 ){
         var LegendContent = document.createElement('span')
         var noVisible = document.createElement('span')
-        noVisible.innerText = "יש להוסיף שכבות למפה\nבשביל לראות מקרא"
+        noVisible.innerText = ""
         LegendContent.append(noVisible)
         mapLegendDiv.append(LegendContent)
+        mapLegendDiv.classList.add('hidden')
+      }else{
+        mapLegendDiv.classList.remove('hidden')
       }
       if(opaqueSymbols){
         var LegendContent = document.createElement('span')

@@ -245,6 +245,7 @@ function parseMap(QS,headerProperties={}){
           map.addControl(locateMeControl);
           locateMeControl._container.classList.add('locate-container');
         }
+        LegendBuilder.addLegend()
         map.addControl(infoControl,'bottom-right')
         if(addTable){
           //map.addControl(tableAdd)
@@ -402,7 +403,7 @@ function buildButtons(buttonDefs,mapJson){
               }
               
           }
-          LegendBuilder.addLegend()
+          
           LegendBuilder.updateLegend(mapJson)
       })
   }

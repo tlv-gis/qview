@@ -251,7 +251,7 @@ esriRenderer = (function(){
                                 if(isMobile){
                                     addMobilePopupEvent(layer)
                                 }else{
-                                    addPopupEvent(layer)
+                                    addDesktopPopupEvent(layer)
                                 }
                                     
                                 addMapHoverEvents(layer)
@@ -278,7 +278,7 @@ esriRenderer = (function(){
                                 if(isMobile){
                                     addMobilePopupEvent(layer)
                                 }else{
-                                    addPopupEvent(layer)
+                                    addDesktopPopupEvent(layer)
                                 }
                                     
                                 addMapHoverEvents(layer)
@@ -342,7 +342,7 @@ esriRenderer = (function(){
                         if(isMobile){
                             addMobilePopupEvent(layer)
                         }else{
-                            addPopupEvent(layer)
+                            addDesktopPopupEvent(layer)
                         }
                             
                         addMapHoverEvents(layer)
@@ -443,7 +443,7 @@ esriRenderer = (function(){
                         if(isMobile){
                             addMobilePopupEvent(layer)
                         }else{
-                            addPopupEvent(layer)
+                            addDesktopPopupEvent(layer)
                         }
                             
                         addMapHoverEvents(layer)
@@ -660,7 +660,7 @@ esriRenderer = (function(){
                 if(isMobile){
                     addMobilePopupEvent(layer)
                 }else{
-                    addPopupEvent(layer)
+                    addDesktopPopupEvent(layer)
                 }
                     
                 addMapHoverEvents(layer)
@@ -764,7 +764,7 @@ esriRenderer = (function(){
                 if(isMobile){
                     addMobilePopupEvent(layer)
                 }else{
-                    addPopupEvent(layer)
+                    addDesktopPopupEvent(layer)
                 }
                     
                 addMapHoverEvents(layer)
@@ -891,7 +891,7 @@ esriRenderer = (function(){
                 if(isMobile){
                     addMobilePopupEvent(layer)
                 }else{
-                    addPopupEvent(layer)
+                    addDesktopPopupEvent(layer)
                 }
                     
                 addMapHoverEvents(layer)
@@ -1246,15 +1246,19 @@ esriRenderer = (function(){
     /*
         create map events for popup creation
     */
-    function addPopupEvent(layer){
+    function addDesktopPopupEvent(layer){
 
         map.on('click', layer['name'], function (e) {
 
             popupContent = buildDesktopPopup(e,layer)
             
-            popup.setHTML(popupContent)
+            env.currentInfoLayer = layer['name'];
+            infoControl.container.classList.remove('minimized')
+            infoControl.container.innerHTML = popupContent
+            
+            /*popup.setHTML(popupContent)
             popup.setLngLat(e.lngLat)
-            popup.addTo(map)
+            popup.addTo(map)*/
         });
 
     }
