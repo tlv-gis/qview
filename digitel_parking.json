@@ -43,12 +43,6 @@
             "label_field":["stop_name"]
         },
         {
-            "id":970,
-            "name":"parking1",
-            "name_heb":"חניוני אחוזות החוף",
-            "fields":["ktovet","shem_chenyon","status_chenyon"]
-        },
-        {
             "id":555,
             "name":"parking2",
             "name_heb":"חניונים פרטיים",
@@ -119,7 +113,7 @@
             "icon":"icons/bus_stop_new_icon.svg"
         },
         {
-            "layers":[970,555,556,488],
+            "layers":[555,556,488],
             "label":"חניונים",
             "icon":"icons/parking_new_icon.svg"
         },
