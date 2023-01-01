@@ -331,37 +331,39 @@ function buildButtons(buttonDefs,mapJson){
                   let layer = mapJson["layers"].filter(obj => {
                       return obj.id === layerID
                     })[0]
-                  env.active_layers.push(layer)
-                  map.setLayoutProperty(layer["name"],'visibility','visible')  
-                  let strokeLayerName = layer['name']+'-stroke'
-                  let labelLayerName = layer['name']+'-labels'
-                  if(neighborhood_url){}else{
-                    let sourceName =  layer['name']+"-source"
-                    
-                    current_bounds = utils.updateCurrentBounds(map)
-                    currentLayerUrl = utils.getLayerUrl(layer)
-                    map.getSource(sourceName).setData(currentLayerUrl)
+                  if(layer){
+                    env.active_layers.push(layer)
+                    map.setLayoutProperty(layer["name"],'visibility','visible')  
+                    let strokeLayerName = layer['name']+'-stroke'
+                    let labelLayerName = layer['name']+'-labels'
+                    if(neighborhood_url){}else{
+                      let sourceName =  layer['name']+"-source"
+                      
+                      current_bounds = utils.updateCurrentBounds(map)
+                      currentLayerUrl = utils.getLayerUrl(layer)
+                      map.getSource(sourceName).setData(currentLayerUrl)
+                    }
+                    if(map.getLayer(strokeLayerName) !== undefined){
+                      map.setLayoutProperty(strokeLayerName,'visibility','visible')  
+                    }  
+                    if(map.getLayer(labelLayerName) !== undefined){
+                      map.setLayoutProperty(labelLayerName,'visibility','visible')  
+                    }
+                    if(layer["type"] && layer["type"] === "raster"){
+                      sourceName = layer['name']+'-source'
+                      esriRenderer.updateRaster(sourceName)
+                      
+                    }
+                    map.once('sourcedataloading', function(e) {
+                        waitForSource(e,layer,function(){
+                          if(map.hasControl(tables)){
+                            map.removeControl(tables)
+                            tables = new LayerTable({'layers':env.active_layers});
+                            map.addControl(tables)
+                          }
+                        })
+                    });
                   }
-                  if(map.getLayer(strokeLayerName) !== undefined){
-                    map.setLayoutProperty(strokeLayerName,'visibility','visible')  
-                  }  
-                  if(map.getLayer(labelLayerName) !== undefined){
-                    map.setLayoutProperty(labelLayerName,'visibility','visible')  
-                  }
-                  if(layer["type"] && layer["type"] === "raster"){
-                    sourceName = layer['name']+'-source'
-                    esriRenderer.updateRaster(sourceName)
-                    
-                  }
-                  map.once('sourcedataloading', function(e) {
-                      waitForSource(e,layer,function(){
-                        if(map.hasControl(tables)){
-                          map.removeControl(tables)
-                          tables = new LayerTable({'layers':env.active_layers});
-                          map.addControl(tables)
-                        }
-                      })
-                  });
               }
               
           }else{
@@ -429,7 +431,7 @@ function addButtonLayer(layerIDs,_callback){
       
       let layer = utils.getLayer(mapJson,id)
       
-      if(map.getLayer(layer['name']) === undefined){
+      if(layer && map.getLayer(layer['name']) === undefined){
 		    esriRenderer.getMetadata(layer)
       }
   }
