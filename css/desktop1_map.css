@@ -273,8 +273,8 @@ body {
     box-sizing: border-box;
     background: #FFFFFF;
     border: 0 solid #D3E0EB !important;
-    box-shadow: 0px 2.25433px 9.58092px rgba(24, 44, 63, 0.06);
-    border-radius: 3.94508px;
+    box-shadow: 0px 2.25433px 9.58092px rgba(24, 44, 63, 0.06) !important;
+    border-radius: 3.94508px !;
     /*transform: matrix(-1, 0, 0, 1, 0, 0) !important;*/
     transition: display 0.1s ease;
     transition: height 0.5s ease;
