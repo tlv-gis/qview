@@ -16,11 +16,9 @@ let LegendBuilder = (function(){
             map.removeControl(legend)
           }
         }else{
-          if(isMobile){
+          
             map.addControl(legend, 'bottom-right')
-          }else{
-            map.addControl(legend)
-          }
+          
           if(legendAddControl){
             legendAddControl.title = "כיבוי מקרא"
           }
@@ -66,26 +64,39 @@ let LegendBuilder = (function(){
         if(map.getLayer(layer["name"])){
           var layerShown = map.getLayoutProperty(layer["name"],'visibility')
           if(layerShown === "visible" ){
-            let LegendContent = document.createElement('span')
+            let LegendContent
+            if(isMobile){
+              LegendContent = document.createElement('span')
+            }else{
+              LegendContent = document.createElement('div')
+              LegendContent.className = "legend-item-container"
+            }
+            
             layersVisible++
             let layerHeader = document.createElement('h4');
             layerHeader.classList.add('legend-layer-name')
             layerHeader.innerHTML = layer["name_heb"]
             LegendContent.append(layerHeader)
+            let layerLine = document.createElement('i');
+            layerLine.classList.add('legend-line');
+            layerLine.innerText = '|'
+            LegendContent.append(layerLine)
+            
+            let layerIconsList;
             if(isMobile){
-              let layerLine = document.createElement('i');
-              layerLine.classList.add('legend-line');
-              layerLine.innerText = '|'
-              LegendContent.append(layerLine)
+              layerIconsList = buildLayerIconsList(layer)
+              LegendContent.append(layerIconsList)
+            }else{
+              layerIconsList = buildDesktopLayerIconsList(layer)
+              LegendContent.append(layerIconsList)
             }
-            let layerIconsList = buildLayerIconsList(layer)
-            LegendContent.append(layerIconsList)
-            if(isMobile){
+            
+            //if(isMobile){
               let endLine = document.createElement('i');
               endLine.classList.add('legend-line');
               endLine.innerText = '|'
               LegendContent.append(endLine)
-            }
+            //}
             mapLegendDiv.append(LegendContent)
           }
         }
@@ -93,9 +104,12 @@ let LegendBuilder = (function(){
       if(layersVisible === 0 ){
         var LegendContent = document.createElement('span')
         var noVisible = document.createElement('span')
-        noVisible.innerText = "יש להוסיף שכבות למפה\nבשביל לראות מקרא"
+        noVisible.innerText = ""
         LegendContent.append(noVisible)
         mapLegendDiv.append(LegendContent)
+        mapLegendDiv.classList.add('hidden')
+      }else{
+        mapLegendDiv.classList.remove('hidden')
       }
       if(opaqueSymbols){
         var LegendContent = document.createElement('span')
@@ -111,6 +125,119 @@ let LegendBuilder = (function(){
       if(layer.symbols && layer.symbols.length > 0){
 
         var layerList = document.createElement('ul');
+
+        for(var i=0;i<layer.symbols.length;i++){
+
+          if(layer.type && layer.type === "raster"){
+            var symbolListItem = document.createElement('li');
+            symbolListItem.classList.add('legend-item')
+            var symbol = layer.symbols[i]
+            var icon = buildPointIcon(symbol)
+            var iconText = "  ";
+            if(symbol.value && symbol.value === "default"){
+              if(layer.symbols.length === 1){
+                iconText += "כל השכבה"
+              }else{
+                iconText += symbol.label ? symbol.label : "אחר";
+              }
+            }else{
+              iconText += symbol.label
+            }
+            let iconTextDiv = document.createElement('div')
+            iconTextDiv.innerText = iconText
+            symbolListItem.append(icon,iconTextDiv)
+            layerList.append(symbolListItem)
+          }
+
+          if(layer.geomType && layer.geomType === "esriGeometryPolygon"){
+
+            var symbolListItem = document.createElement('li');
+            symbolListItem.classList.add('legend-item')
+            var symbol = layer.symbols[i]
+            var icon = buildPolygonIcon(symbol)
+            var iconText = "";
+            if(symbol.fillOpacity < 1){
+              opaqueSymbols = 1;
+              iconText += " * ";
+            }else{
+              iconText += "  ";
+            }
+            if(symbol.value && symbol.value === "default"){
+              if(layer.symbols.length === 1){
+                iconText += "כל הפוליגונים"
+              }else{
+                iconText += layer["renderer"]["defaultLabel"] ? layer["renderer"]["defaultLabel"] : "אחר";
+              }
+              
+            }else{
+              iconText += symbol.label
+            }
+            let iconTextDiv = document.createElement('div')
+            iconTextDiv.innerText = iconText
+            symbolListItem.append(icon,iconTextDiv)
+            layerList.append(symbolListItem)
+
+          }
+          else if(layer.geomType && layer.geomType === "esriGeometryPolyline"){
+
+            var symbolListItem = document.createElement('li');
+            symbolListItem.classList.add('legend-item')
+            var symbol = layer.symbols[i]
+            var icon = buildLineIcon(symbol)
+            var iconText = "";
+            if(symbol.lineOpacity < 1){
+              opaqueSymbols = 1;
+              iconText += " * ";
+            }else{
+              iconText += "  ";
+            }
+            if(symbol.value && symbol.value === "default"){
+              if(layer.symbols.length === 1){
+                iconText += "כל הקווים"
+              }else{
+                iconText += layer["renderer"]["defaultLabel"] ? layer["renderer"]["defaultLabel"] : "אחר";
+              }
+            }else{
+              iconText += symbol.label
+            }
+            let iconTextDiv = document.createElement('div')
+            iconTextDiv.innerText = iconText
+            symbolListItem.append(icon,iconTextDiv)
+            layerList.append(symbolListItem)
+
+          }
+          else if(layer.geomType && layer.geomType === "esriGeometryPoint"){
+
+            var symbolListItem = document.createElement('li');
+            symbolListItem.classList.add('legend-item')
+            var symbol = layer.symbols[i]
+            var icon = buildPointIcon(symbol)
+            var iconText = "  ";
+            if(symbol.value && symbol.value === "default"){
+              if(layer.symbols.length === 1){
+                iconText += " כל הנקודות"
+              }else{
+                iconText += layer["renderer"]["defaultLabel"] ? layer["renderer"]["defaultLabel"] : "אחר";
+              }
+            }else{
+              iconText += symbol.label
+            }
+            let iconTextDiv = document.createElement('div')
+            iconTextDiv.innerText = iconText
+            symbolListItem.append(icon,iconTextDiv)
+            layerList.append(symbolListItem)
+
+          }
+        }
+        return layerList;
+      }
+    }
+
+    function buildDesktopLayerIconsList(layer){
+      if(layer.symbols && layer.symbols.length > 0){
+
+        var layerList = document.createElement('div');
+        layerList.className = "legend-items-container";
 
         for(var i=0;i<layer.symbols.length;i++){
 

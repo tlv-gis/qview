@@ -1,5 +1,5 @@
 {
-    "title":"דיגיתל - תנועה וחניה",
+    "title":"דיגיתל - תנועה וחנייה",
     "layers":[
         {
             "id":577,
@@ -43,12 +43,6 @@
             "label_field":["stop_name"]
         },
         {
-            "id":970,
-            "name":"parking1",
-            "name_heb":"חניוני אחוזות החוף",
-            "fields":["ktovet","shem_chenyon","status_chenyon"]
-        },
-        {
             "id":555,
             "name":"parking2",
             "name_heb":"חניונים פרטיים",
@@ -83,7 +77,7 @@
         {
             "id":860,
             "name":"scooters",
-            "name_heb":"תאי חניה לכלים זעירים",
+            "name_heb":"תאי חנייה לכלים זעירים",
             "fields":["address","location","cell_size"]
         }
     ],
@@ -119,7 +113,7 @@
             "icon":"icons/bus_stop_new_icon.svg"
         },
         {
-            "layers":[970,555,556,488],
+            "layers":[555,556,488],
             "label":"חניונים",
             "icon":"icons/parking_new_icon.svg"
         },
@@ -130,7 +124,7 @@
         },     
         {
             "layers":[860],
-            "label":"חניה לקורקינטים ציבוריים",
+            "label":"חנייה לקורקינטים שיתופיים",
             "icon":"icons/scooter_new_icon.svg"
         }
     ]

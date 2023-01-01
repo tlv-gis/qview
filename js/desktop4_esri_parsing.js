@@ -151,9 +151,14 @@ esriRenderer = (function(){
                         parseUniqueValueRenderer(renderer,layer)
                     }
                 })
+                .catch((error) => {
+                    console.log(layer)
+                    console.error('There has been a problem with your fetch operation:', error);
+                  });
             }
         }
         catch (err) {
+            console.log(layer)
             console.log(arguments.callee.toString(), err);
         }
     }
@@ -251,7 +256,7 @@ esriRenderer = (function(){
                                 if(isMobile){
                                     addMobilePopupEvent(layer)
                                 }else{
-                                    addPopupEvent(layer)
+                                    addDesktopPopupEvent(layer)
                                 }
                                     
                                 addMapHoverEvents(layer)
@@ -278,7 +283,7 @@ esriRenderer = (function(){
                                 if(isMobile){
                                     addMobilePopupEvent(layer)
                                 }else{
-                                    addPopupEvent(layer)
+                                    addDesktopPopupEvent(layer)
                                 }
                                     
                                 addMapHoverEvents(layer)
@@ -342,7 +347,7 @@ esriRenderer = (function(){
                         if(isMobile){
                             addMobilePopupEvent(layer)
                         }else{
-                            addPopupEvent(layer)
+                            addDesktopPopupEvent(layer)
                         }
                             
                         addMapHoverEvents(layer)
@@ -443,7 +448,7 @@ esriRenderer = (function(){
                         if(isMobile){
                             addMobilePopupEvent(layer)
                         }else{
-                            addPopupEvent(layer)
+                            addDesktopPopupEvent(layer)
                         }
                             
                         addMapHoverEvents(layer)
@@ -660,7 +665,7 @@ esriRenderer = (function(){
                 if(isMobile){
                     addMobilePopupEvent(layer)
                 }else{
-                    addPopupEvent(layer)
+                    addDesktopPopupEvent(layer)
                 }
                     
                 addMapHoverEvents(layer)
@@ -764,7 +769,7 @@ esriRenderer = (function(){
                 if(isMobile){
                     addMobilePopupEvent(layer)
                 }else{
-                    addPopupEvent(layer)
+                    addDesktopPopupEvent(layer)
                 }
                     
                 addMapHoverEvents(layer)
@@ -891,7 +896,7 @@ esriRenderer = (function(){
                 if(isMobile){
                     addMobilePopupEvent(layer)
                 }else{
-                    addPopupEvent(layer)
+                    addDesktopPopupEvent(layer)
                 }
                     
                 addMapHoverEvents(layer)
@@ -1246,15 +1251,19 @@ esriRenderer = (function(){
     /*
         create map events for popup creation
     */
-    function addPopupEvent(layer){
+    function addDesktopPopupEvent(layer){
 
         map.on('click', layer['name'], function (e) {
 
             popupContent = buildDesktopPopup(e,layer)
             
-            popup.setHTML(popupContent)
+            env.currentInfoLayer = layer['name'];
+            infoControl.container.classList.remove('minimized')
+            infoControl.container.innerHTML = popupContent
+            
+            /*popup.setHTML(popupContent)
             popup.setLngLat(e.lngLat)
-            popup.addTo(map)
+            popup.addTo(map)*/
         });
 
     }
@@ -1274,15 +1283,13 @@ esriRenderer = (function(){
     function buildDesktopPopup(e,layer){
 
         popupContent = '<p dir="rtl">'
+        
             feature = e.features[0]
             if('label_field' in layer){
-                popupContent += '<table class="popup-table">'
-                popupContent += '<tr><th colspan="2">'+feature.properties[layer['label_field']]+"</th></tr>"
-                popupContent += "<tr><th>שם שדה</th><th>ערך</th></tr>"
-            }else{
-                popupContent += '<table class="popup-table">'
-                popupContent += "<tr><th>שם שדה</th><th>ערך</th></tr>"
+                popupContent += `<div class="popup-header">${feature.properties[layer['label_field']]}</div>`
+                
             }
+            popupContent += '<table class="popup-table">'
             if('fields' in layer){
                 requiredFields = layer['fields']
                 if(requiredFields.indexOf('*') > -1){
@@ -1297,7 +1304,11 @@ esriRenderer = (function(){
                             dateString = new Date(feature.properties[requiredFields[i]]).toLocaleString("he-IL")
                             popupContent += "<tr><td>"+fieldName+"</td><td>"+dateString+"</td></tr>"    
                         }else{
-                            popupContent += "<tr><td>"+fieldName+"</td><td>"+feature.properties[requiredFields[i]]+"</td></tr>"
+                            if(fieldName == 'אתר אינטרנט'){
+                                popupContent += `<tr><td>${fieldName}</td><td><a href="${feature.properties[requiredFields[i]]}">${feature.properties[requiredFields[i]]}</a></td></tr>`
+                            }else{
+                                popupContent += "<tr><td>"+fieldName+"</td><td>"+feature.properties[requiredFields[i]]+"</td></tr>"
+                            }
                         }
                         
                     }
