@@ -13,7 +13,7 @@ body {
     direction: rtl;
     margin: 0; 
     padding: 0; 
-    font-family: 'Assistant','Roboto Light', Arial, sans-serif;
+    font-family: 'Assistant extralight','Roboto Light', Arial, sans-serif;
 }
 .map-container {
     width: 100%;
@@ -329,7 +329,7 @@ body {
     transform: matrix(-1, 0, 0, 1, 0, 0) !important;
 }
 .info-ctrl table {
-    font-family: 'Assistant','Roboto Light', Arial, sans-serif;
+    font-family: 'Assistant extralight','Roboto Light', Arial, sans-serif;
     border: none;
     width: 78%;
     max-width: 80%;
@@ -356,7 +356,7 @@ body {
     right: 0%;
     position: absolute;
 
-    font-family: 'Assistant';
+    font-family: 'Assistant extralight';
     font-style: normal;
     font-weight: 600;
     font-size: 17px;
@@ -367,7 +367,7 @@ body {
 
 }
 .info-ctrl table th {
-    font-family: 'Assistant','Roboto Light', Arial, sans-serif;
+    font-family: 'Assistant extralight','Roboto Light', Arial, sans-serif;
     font-style: normal;
     font-weight: 700;
     font-size: 15px;
@@ -381,7 +381,7 @@ body {
 
 }
 .info-ctrl table td {
-    font-family: 'Assistant','Roboto Light', Arial, sans-serif;
+    font-family: 'Assistant extralight','Roboto Light', Arial, sans-serif;
     font-style: normal;
     font-weight: 400;
     font-size: 12px;
@@ -473,10 +473,10 @@ body {
     height: 14px;*/
     
     top: 66%;
-    font-family: 'Assistant';
+    font-family: 'Assistant extralight';
     font-style: normal;
     font-weight: 600;
-    font-size: 20px;
+    font-size: 150%;
     line-height: 26px;
 
     margin-left: auto;
@@ -560,7 +560,7 @@ body {
 }
 .desktop-button {
     background-color: #ffffff; 
-    font-family: 'Assistant';
+    font-family: 'Assistant extralight';
     padding: 0;
     text-align: justify;
     text-justify: inter-word;
@@ -581,7 +581,8 @@ body {
 .desktop-button > span{
 
     width: 95%;
-    height: 30%;
+    height: max-content;
+    max-height: 50%;
     position: relative;
     margin-top: 3px;
     text-align: center;
@@ -642,12 +643,12 @@ body {
     text-align: right;
     width: 95%;
 
-    font-family: 'Assistant' !important;
+    font-family: 'Assistant extralight' !important;
     font-style: normal;
     font-weight: 400;
     font-size: 19px;
-    font-size: 1.5em;
-    line-height: 18px;
+    font-size: 1.2em;
+    line-height: 110%;
     white-space: break-spaces;
     
 

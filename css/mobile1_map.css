@@ -271,7 +271,7 @@ body {
     transform: matrix(-1, 0, 0, 1, 0, 0) !important;
 }
 .info-ctrl table {
-    font-family: 'Assistant','Roboto Light', Arial, sans-serif;
+    font-family: 'Assistant extralight','Roboto Light', Arial, sans-serif;
     border: none;
     width: 91.5%;
     max-width: 93%;
@@ -283,7 +283,7 @@ body {
 
 }
 .info-ctrl table th {
-    font-family: 'Assistant','Roboto Light', Arial, sans-serif;
+    font-family: 'Assistant extralight','Roboto Light', Arial, sans-serif;
     font-style: normal;
     font-weight: 700;
     font-size: 15px;
@@ -296,7 +296,7 @@ body {
 
 }
 .info-ctrl table td {
-    font-family: 'Assistant','Roboto Light', Arial, sans-serif;
+    font-family: 'Assistant extralight','Roboto Light', Arial, sans-serif;
     font-style: normal;
     font-weight: 400;
     font-size: 12px;
@@ -396,7 +396,7 @@ body {
     left: 27%;
     top: 66%;
 
-    font-family: 'Assistant';
+    font-family: 'Assistant extralight';
     font-style: normal;
     font-weight: 700;
     font-size: 10.909px;
@@ -458,7 +458,7 @@ nav .drop-down li:first-child button:after {
 }
 .button {
     background-color: #ffffff; 
-    font-family: 'Assistant';
+    font-family: 'Assistant extralight';
     color: black;
     padding: 0;
     text-align: justify;
@@ -477,14 +477,11 @@ nav .drop-down li:first-child button:after {
     overflow-y: hidden;
 }
 .button > span{
-    font-family: 'Assistant';
-    line-height: 10px;
-    font-size: 11px;
+    font-family: 'Assistant extralight';
     width: 95%;
     position: relative;
     margin-top: 3px;
     text-align: center;
-    color: black;
     padding-right: 2.5%;
 }
 .button:hover{
@@ -506,7 +503,7 @@ nav .drop-down li:first-child button:after {
 
 .button-on {
     background-color: #00b0f0; 
-    font-family: 'Assistant';
+    font-family: 'Assistant extralight';
     color: white;
     padding: 0;
     text-align: justify;
@@ -525,7 +522,7 @@ nav .drop-down li:first-child button:after {
     
 }
 .button-on > span{
-    font-family: 'Assistant';
+    font-family: 'Assistant extralight';
     font-size: 11px;
     width: 95%;
     position: relative;
@@ -554,15 +551,16 @@ nav .drop-down li:first-child button:after {
 .button-text {
     display: inline-block;
     vertical-align: middle;
-    font-family:  'Assistant','Aharoni';
-    font-size: 15px;
-    font-weight: lighter;
+    font-family:  'Assistant extralight','Aharoni';
+    font-size: 0.9em;
+    font-weight: 400;
     font-stretch: normal;
     font-style: normal;
-    line-height: 14px;
+    line-height: 90%;
     letter-spacing: normal;
-    text-align: right;
-    color: #2b393f;
+    color: #2A3C66;
+    height: max-content;
+    max-height: 50%;
 }
 .ShhunaReSize {
     display: inline-block;
@@ -675,7 +673,7 @@ nav .drop-down li:first-child button:after {
     max-height: 40vh;
 }
 .popup-table {
-    font-family: 'Assistant','Roboto Light', Arial, sans-serif;
+    font-family: 'Assistant extralight','Roboto Light', Arial, sans-serif;
     border-collapse: collapse;
     width: 100%;
   }
