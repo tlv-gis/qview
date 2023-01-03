@@ -178,7 +178,7 @@ function createFilter(QS){
   if("radius" in QS){
     mapCenterRadius = QS.radius;
   }else{
-    mapCenterRadius = 100;
+    mapCenterRadius = 200;
   }
   if("ne" in QS){
     let neighborhood_code = parseInt(QS.ne);
@@ -197,7 +197,7 @@ function createFilter(QS){
   }else if("k_rechov" in QS){
     if("ms_bayit" in QS){
         utils.getAddressPoint(QS.k_rechov,QS.ms_bayit)
-        .then(point => radiusPolygon = turf.buffer(point,0.05))
+        .then(point => radiusPolygon = turf.buffer(point,0.2))
         
     }else{
       utils.getStreetLine(QS.k_rechov)
