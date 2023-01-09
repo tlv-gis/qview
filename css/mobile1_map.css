@@ -534,7 +534,7 @@ nav .drop-down li:first-child button:after {
     filter: contrast(75%);
 }
 .button-on:hover {
-    background-color: #f3f3f3; 
+    background-color: #ffffff; 
     color: black;
 }
 .button-on:hover > span{
@@ -545,7 +545,7 @@ nav .drop-down li:first-child button:after {
     filter: contrast(75%);
 }
 .mapboxgl-ctrl .button-on:not(:disabled):hover{
-    background-color: #f3f3f3; 
+    background-color: #ffffff; 
     color: black;
 }
 .button-text {
