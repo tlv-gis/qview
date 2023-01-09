@@ -282,8 +282,9 @@ function buildButtons(buttonDefs,mapJson){
   buttonUL.classList.add(isMobile ? 'buttons-span': 'desktop-buttons-span')
   buttonUL.classList.add(isMobile ? 'drop-down' : 'desktop-drop-down' ,'closed')
 
-  let buttonNav = document.createElement('li');
+  let buttonNav = document.createElement('button');
   buttonNav.classList.add(isMobile ? 'button-nav': 'desktop-button-nav');
+  buttonNav.classList.add(isMobile ? 'button': 'desktop-button');
   buttonNav.onclick = function() {
 
       this.parentNode.classList.toggle('closed')

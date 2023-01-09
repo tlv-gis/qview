@@ -508,10 +508,25 @@ body {
     height: calc(6vw * 0.956);
     width: 6vw;
 }
-.desktop-button-nav {
+.desktop-drop-down .desktop-button-nav {
     height: calc(6vw * 0.956);
-    width: 6vw;
+    width: 6vw !important;
     align-content:inherit;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    text-align: center !important;
+}
+.desktop-buttons-span li:focus-visible{
+    border: none;
+}
+.desktop-buttons-span li:focus-within{
+    border: none;
+}
+.desktop-button:focus{
+    border: medium solid;
+}
+.desktop-button::-moz-focus-inner{
+    border: medium solid;
 }
 
 .desktop-drop-down.closed > li {

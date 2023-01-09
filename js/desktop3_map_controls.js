@@ -17,7 +17,7 @@
       this.container = document.createElement('div');
       this.container.className = 'mapboxgl-ctrl map-header';
       this.container.style.margin = 0;
-      let innerHTML = '<div ng-if="\'True\' ==\'True\'" class="ShhunaTitle ng-binding ng-scope" ng-bind-html="\'<b>מפת מרחב</b> הצג לפי:\'"><b>מפת מרחב</b> הצג לפי:</div>'
+      let innerHTML = `<div class="ShhunaTitle"><img class="tlv-mobile-logo" src="./icons/logo_new_design.svg"></div>`
       
       if(isMobile){
          innerHTML =`<div class="ShhunaTitle"><img class="tlv-mobile-logo" src="./icons/logo_new_design.svg"></div>`;
