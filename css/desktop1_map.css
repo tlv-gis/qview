@@ -136,7 +136,7 @@ body {
 }
 .mapboxgl-ctrl-bottom-right > .info-ctrl ~
 .map-legend {
-    max-width: 95vw;
+    max-width: calc(77.5vw - 50px);
     right: calc(20.4vw + 1.5vw);
 }
 
