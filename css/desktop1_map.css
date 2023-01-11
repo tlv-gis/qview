@@ -384,7 +384,7 @@ body {
     font-family: 'Assistant extralight','Roboto Light', Arial, sans-serif;
     font-style: normal;
     font-weight: 400;
-    font-size: 12px;
+    font-size: 1rem;
     line-height: 15.7px;
     text-align: right;
     color: #747474;
@@ -609,7 +609,7 @@ body {
     color: white;
     
 }
-.desktop-button:hover > span{
+.desktop-button:hover > .desktop-button-text{
     
     color: white;
 }
@@ -617,7 +617,7 @@ body {
     filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(186deg) brightness(118%) contrast(119%);
 }
 
-.desktop-button-on > span{
+.desktop-button-on > .desktop-button-text{
     color: white;
 }
 .desktop-button-on > img{
@@ -626,7 +626,7 @@ body {
 .desktop-button-on:hover {
     background-color: white !important; 
 }
-.desktop-button-on:hover > span{
+.desktop-button-on:hover > .desktop-button-text{
     color: #2A3C66 !important;
 }
 .desktop-button-on:hover > img{
@@ -661,9 +661,9 @@ body {
     font-family: 'Assistant extralight' !important;
     font-style: normal;
     font-weight: 400;
-    font-size: 19px;
-    font-size: 1.05em;
-    line-height: 105%;
+    /*font-size: 19px;*/
+    font-size: 0.8rem;
+    line-height: 0.8rem;
     white-space: break-spaces;
     
 

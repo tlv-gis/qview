@@ -313,10 +313,10 @@ body {
     font-family: 'Assistant extralight','Roboto Light', Arial, sans-serif;
     font-style: normal;
     font-weight: 400;
-    font-size: 12px;
-    line-height: 15.7px;
+    font-size: 0.9rem;
+    line-height: 1rem;
     text-align: right;
-    color: #5F5F5F;
+    color: #747474;
     width: 40%;
     max-width: 57%;
 
