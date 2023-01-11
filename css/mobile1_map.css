@@ -63,7 +63,7 @@ body {
 .map-legend {
     background-color: #fff;
     display: grid;
-    gap: 1em;
+    gap: 0.1em;
     /*column-width: auto;
     grid-auto-flow: column;
     grid-column: auto;*/
@@ -100,6 +100,12 @@ body {
     height: 6vh;
     z-index: 4;
 }
+
+.map-legend::-webkit-scrollbar{
+    width: 3px;
+    height: 3px;
+}
+
 .mapboxgl-ctrl-bottom-right > .info-ctrl ~
 .map-legend {
     max-width: 95vw;
@@ -111,7 +117,7 @@ body {
     height: 100%;
     max-height: 6vh;
     list-style: none;
-   margin-top: auto;
+    margin-top: auto;
     margin-bottom: auto;
      /*display: table;*/
     position: relative;
@@ -131,12 +137,13 @@ body {
 */
 .map-legend > span > h4{
     display: flex;
-    height: 90%;
-    position: relative;
+    /*height: 90%;*/
+    /*position: relative;*/
     padding-right: 0;
     white-space: normal;
     word-break: break-word;
-    overflow-x: auto;
+    overflow-wrap: normal;
+    /*overflow-x: auto;*/
     max-width: 25vw;
     min-width: 15vw;
     /*border-left: 1px solid black;*/
@@ -144,9 +151,11 @@ body {
     order: 1;
     margin-top: auto;
     margin-bottom: auto;
-    align-items: center; /* Add this property */
-    justify-content: center; /* Add this property */
-    
+    align-items: center; 
+    /*justify-content: center; */
+    line-height: 1.1em;
+    padding-left: 5px;
+    padding-right: 5px;
 }
 .map-legend > span > .legend-line{
     display: table-cell;
@@ -233,6 +242,11 @@ body {
     /*transform: matrix(-1, 0, 0, 1, 0, 0) !important;*/
     transition: display 0.1s ease;
     transition: height 0.5s ease;
+}
+
+.info-ctrl::-webkit-scrollbar{
+    width: 3px;
+    height: 3px;
 }
 
 .info-ctrl.minimized{
